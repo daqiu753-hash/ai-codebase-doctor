@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { createProgram } from '../src/cli.js'
+import fsp from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
+import { pathToFileURL } from 'node:url'
+import { createProgram, isCliEntryPoint } from '../src/cli.js'
 import { normalizeFailOn, normalizeFormat, normalizeProfile, shouldFail } from '../src/cliOptions.js'
 
 describe('CLI options', () => {
@@ -28,5 +32,21 @@ describe('CLI options', () => {
     expect(help).toContain('--format <format>')
     expect(help).toContain('--profile <profile>')
     expect(help).toContain('--online')
+  })
+
+  it('recognizes npm bin symlinks as CLI entrypoints', async () => {
+    const root = await fsp.mkdtemp(path.join(os.tmpdir(), 'ai-codebase-doctor-cli-'))
+    try {
+      const realEntry = path.join(root, 'dist', 'cli.js')
+      const binEntry = path.join(root, 'node_modules', '.bin', 'ai-codebase-doctor')
+      await fsp.mkdir(path.dirname(realEntry), { recursive: true })
+      await fsp.mkdir(path.dirname(binEntry), { recursive: true })
+      await fsp.writeFile(realEntry, '#!/usr/bin/env node\n', 'utf8')
+      await fsp.symlink(realEntry, binEntry)
+
+      expect(isCliEntryPoint(pathToFileURL(realEntry).href, binEntry)).toBe(true)
+    } finally {
+      await fsp.rm(root, { recursive: true, force: true })
+    }
   })
 })

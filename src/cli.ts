@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+import { realpathSync } from 'node:fs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { fileURLToPath } from 'node:url'
 import { Command } from 'commander'
 import { runDoctor } from './index.js'
 import { normalizeFailOn, normalizeFormat, normalizeProfile, shouldFail } from './cliOptions.js'
@@ -78,7 +79,17 @@ export function createProgram(): Command {
   return program
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+export function isCliEntryPoint(metaUrl = import.meta.url, argvPath = process.argv[1]): boolean {
+  if (!argvPath) return false
+  const modulePath = fileURLToPath(metaUrl)
+  try {
+    return realpathSync(modulePath) === realpathSync(argvPath)
+  } catch {
+    return path.resolve(modulePath) === path.resolve(argvPath)
+  }
+}
+
+if (isCliEntryPoint()) {
   createProgram().parseAsync(process.argv).catch((error: unknown) => {
     console.error(error instanceof Error ? error.message : error)
     process.exit(1)
