@@ -1,60 +1,50 @@
 # AI Codebase Doctor
 
-AI can generate a full repo in minutes.
+AI can generate a repo in minutes.
 
 But can it actually run?
 
-**AI Codebase Doctor** audits AI-generated codebases for broken project reality:
+`ai-codebase-doctor` audits AI-generated codebases for hallucinated dependencies, broken scripts, missing env vars, fake tests, and lying README instructions.
 
-- hallucinated dependencies
-- broken README commands
-- missing environment variables
-- package scripts that point nowhere
-- fake or empty tests
-- weak project metadata
-- agent-ready fix prompts
+It is not a generic linter. It is a deterministic, read-only reality check for repos that look finished but may not install, configure, test, or start.
+
+## Installation
+
+Run it directly with `npx`:
 
 ```bash
 npx ai-codebase-doctor .
 ```
 
-This repository is the starter implementation for v0.1. The product direction is intentionally narrow: verify whether an AI-generated repo is internally consistent before a human wastes time debugging it.
-
-## Current v0.1 scope
-
-Supported first:
-
-- Node.js / TypeScript / JavaScript projects
-- README command checks
-- `package.json` script checks
-- `process.env.*`, `import.meta.env.*`, and Python `os.getenv()` env-var checks
-- JS/TS dependency declaration checks
-- test files with no real assertions
-- Markdown, JSON, and console reports
-- Codex / Claude Code fix-prompt generation
-
-Not in v0.1:
-
-- full security scanning
-- complete static analysis
-- automatic code repair
-- cloud service
-- full Python package analysis
-- complete framework-specific API route matching
-
-## Install locally during development
+For local development in this repository:
 
 ```bash
 npm install
 npm run build
-node dist/cli.js examples/ai-generated-fake-saas --out reports
+npm run doctor:example
 ```
 
-During development:
+## Usage
+
+Scan the current project:
 
 ```bash
-npm run dev -- examples/ai-generated-fake-saas --out reports
+npx ai-codebase-doctor .
 ```
+
+Write reports to a custom directory:
+
+```bash
+npx ai-codebase-doctor ./path/to/project --out reports
+```
+
+Print JSON to stdout:
+
+```bash
+npx ai-codebase-doctor . --json --no-files
+```
+
+The scanner reads project files only. It does not execute target-project scripts and does not call an LLM API.
 
 ## Example output
 
@@ -66,11 +56,17 @@ Critical: 6
 Warnings: 1
 Info: 2
 
-[R001] README command not found
+Detected:
+- Framework: nextjs
+- Package manager: npm
+- Source files: 3
+- Test files: 1
+
+[D001] Imported package not declared
 Severity: critical
-File: README.md
-Evidence: README says: pnpm dev
-Fix: Add a "dev" script to package.json or update the README command.
+File: src/lib/ai.ts
+Evidence: src/lib/ai.ts imports @ai-sdk/openai
+Fix: Install and declare @ai-sdk/openai, replace the import, or remove unused code.
 
 [E001] Environment variable used but not documented
 Severity: critical
@@ -78,22 +74,72 @@ File: src/lib/db.ts
 Evidence: src/lib/db.ts uses DATABASE_URL
 Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 
-[D001] Imported package not declared
+[R001] README command not found
 Severity: critical
-File: src/lib/ai.ts
-Evidence: src/lib/ai.ts imports @ai-sdk/openai
-Fix: Install and declare @ai-sdk/openai, replace the import, or remove unused code.
+File: README.md
+Evidence: README says: pnpm dev
+Fix: Add a "dev" script to package.json or update the README command.
 ```
+
+## Generated reports
+
+By default, file output is written to `doctor-reports/`. In this repo, the example command writes to `reports/`, which is ignored by git.
+
+Generated files:
+
+| File | Purpose |
+|---|---|
+| `doctor-report.md` | Human-readable audit report that can be pasted into an issue. |
+| `doctor-report.json` | Structured report for tooling and CI experiments. |
+| `fix-with-codex.md` | Repair prompt for Codex. |
+| `fix-with-claude-code.md` | Repair prompt for Claude Code. |
+| `fix-with-cursor.md` | Repair prompt for Cursor. |
+
+## What it checks today
+
+| ID | Area | Severity | Check |
+|---|---|---:|---|
+| `R001` | README | critical | README mentions a package script command that is missing from `package.json`. |
+| `S002` | Scripts | critical | A `package.json` script references an entry file that does not exist. |
+| `E001` | Env | critical | Source code uses an env var that is missing from `.env.example`. |
+| `E002` | Env | info | `.env.example` documents an env var that source code does not use. |
+| `D001` | Dependencies | critical | JS/TS source imports a package not declared in `package.json`. |
+| `T001` | Tests | warning | A test file has no obvious assertion. |
+
+## Why not just use ESLint/Semgrep/Gitleaks/Knip?
+
+Use those tools too. `ai-codebase-doctor` checks a different layer: whether an AI-generated repository is internally honest about how to run.
+
+| Tool | Best at | Different from `ai-codebase-doctor` |
+|---|---|---|
+| ESLint | Code quality and style rules. | Does not compare README commands, env docs, scripts, and generated tests as a run-readiness check. |
+| Semgrep | Pattern-based static analysis and security rules. | Broader and more powerful, but not focused on AI repo reality mismatches. |
+| Gitleaks | Secret detection. | Looks for leaked secrets, not missing env documentation or broken startup instructions. |
+| Knip | Unused files, exports, and dependencies. | Helps remove dead code; this tool flags hallucinated dependencies and docs/scripts that lie. |
+
+## What this is not
+
+- Not a replacement for ESLint, TypeScript, tests, security scanners, or dependency audits.
+- Not a full static analyzer.
+- Not an automatic repair tool.
+- Not an LLM wrapper.
+- Not a guarantee that the app is production-ready.
+
+## Roadmap
+
+See [docs/roadmap.md](docs/roadmap.md).
+
+Near-term focus:
+
+- stronger Dockerfile and config consistency checks
+- secret-lite checks without becoming a secret scanner
+- frontend/backend API path mismatch detection
+- `--ci` mode
+- better line-number evidence
 
 ## Philosophy
 
-AI-generated repos often look complete before they are complete. This tool focuses on reality checks across documentation, scripts, environment variables, dependencies, tests, and future agent repair loops.
-
-## GitHub description
-
-```text
-A CLI that audits AI-generated codebases and tells you why they won't run.
-```
+AI-generated repos often look complete before they are complete. This tool focuses on the boring but expensive gaps: commands that do not exist, files that scripts point to but never created, env vars nobody documented, imports nobody declared, and tests that verify nothing.
 
 ## License
 

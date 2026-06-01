@@ -18,7 +18,7 @@
 - frontend/backend API path scanner
 - `--ci` mode
 - better line-number detection
-- scanner unit tests
+- more scanner fixtures
 
 ## v0.3: Framework profiles
 

@@ -1,28 +1,87 @@
 # AI Codebase Doctor
 
-AI 五分钟生成一个项目，但它真的能跑吗？
+AI 可以在几分钟内生成一个 repo。
 
-**AI Codebase Doctor** 是一个专门检查 AI 生成代码库真实性的 CLI 工具。它不做泛泛的代码风格检查，而是优先检查 AI 生成项目最容易“看起来完整、实际跑不起来”的地方。
+但它真的能跑吗？
 
-第一版重点检查：
+`ai-codebase-doctor` 是一个面向 AI 生成代码库的只读、确定性 CLI 检查工具。它检查的不是代码风格，而是项目是否真的自洽：依赖是否幻觉、脚本是否损坏、环境变量是否缺文档、测试是否只是空壳、README 里的运行说明是否在说谎。
 
-- README 里的启动命令是否真实存在
-- `package.json` scripts 是否完整
-- 代码使用的环境变量是否写入 `.env.example`
-- JS/TS import 的包是否声明在依赖文件里
-- 测试文件是否只是 AI 生成的空壳测试
-- 输出 Markdown / JSON 报告
-- 生成可交给 Codex / Claude Code 的修复提示词
+## 安装与使用
 
-开发运行：
+```bash
+npx ai-codebase-doctor .
+```
+
+扫描指定项目并输出报告：
+
+```bash
+npx ai-codebase-doctor ./path/to/project --out reports
+```
+
+本仓库本地 demo：
 
 ```bash
 npm install
-npm run dev -- examples/ai-generated-fake-saas --out reports
+npm run build
+npm run doctor:example
 ```
 
-项目定位：
+扫描过程只读取文件，不执行目标项目里的 scripts，也不调用 LLM API。
+
+## 示例输出
 
 ```text
-AI 生成代码库的真实性、可运行性、一致性检查器。
+AI Codebase Doctor
+
+Score: 21/100
+Critical: 6
+Warnings: 1
+Info: 2
+
+[D001] Imported package not declared
+Severity: critical
+File: src/lib/ai.ts
+Evidence: src/lib/ai.ts imports @ai-sdk/openai
+Fix: Install and declare @ai-sdk/openai, replace the import, or remove unused code.
+
+[E001] Environment variable used but not documented
+Severity: critical
+File: src/lib/db.ts
+Evidence: src/lib/db.ts uses DATABASE_URL
+Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 ```
+
+## 生成报告
+
+默认输出到 `doctor-reports/`。本仓库 demo 输出到 `reports/`，该目录已在 `.gitignore` 中忽略。
+
+- `doctor-report.md`
+- `doctor-report.json`
+- `fix-with-codex.md`
+- `fix-with-claude-code.md`
+- `fix-with-cursor.md`
+
+## 当前检查项
+
+| ID | 领域 | 含义 |
+|---|---|---|
+| `R001` | README | README 提到的 package script 在 `package.json` 中不存在。 |
+| `S002` | Scripts | `package.json` script 指向不存在的入口文件。 |
+| `E001` | Env | 代码使用了 `.env.example` 未记录的环境变量。 |
+| `E002` | Env | `.env.example` 记录了源码未使用的环境变量。 |
+| `D001` | Dependencies | JS/TS 源码 import 了未声明的包。 |
+| `T001` | Tests | 测试文件没有明显断言。 |
+
+## 它不是什么
+
+它不是 ESLint、Semgrep、Gitleaks 或 Knip 的替代品。那些工具分别擅长代码规则、安全模式、secret 检测和未使用代码清理；`ai-codebase-doctor` 专注检查 AI 生成项目是否真的能安装、配置、测试和启动。
+
+它也不是自动修复工具、LLM wrapper 或完整静态分析器。
+
+## Roadmap
+
+见 [docs/roadmap.md](docs/roadmap.md)。
+
+## License
+
+MIT
