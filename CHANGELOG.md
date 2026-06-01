@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.1
+
+Documentation and npm bin entry fix after the first npm publication.
+
+- Make `npx ai-codebase-doctor .` the primary README usage.
+- Remove stale pre-publication language.
+- Fix the CLI entrypoint when launched through npm/npx bin symlinks.
+
 ## v1.0.0
 
 Stable public release.
@@ -12,8 +20,7 @@ Stable public release.
 - Realistic fixtures and field test records.
 - False-positive policy and scanner quality documentation.
 - Public contribution, security, issue, and pull request templates.
-
-npm publishing remains pending until npm authentication is completed on the release machine.
+- First npm publication: `ai-codebase-doctor@1.0.0`.
 
 ## v0.5.0
 
@@ -28,7 +35,7 @@ Developer workflow release.
 - GitHub Actions / CI documentation.
 - Demo documentation.
 
-npm publishing is pending until npm auth and package ownership are confirmed.
+npm publishing was deferred in v0.5.0 and completed in v1.0.0.
 
 ## v0.1.0
 

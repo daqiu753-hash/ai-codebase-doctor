@@ -18,15 +18,7 @@ The scanner is best-effort and conservative by design: it favors concrete, expla
 
 ## Installation
 
-Local usage before the first npm release:
-
-```bash
-npm install
-npm run build
-node dist/cli.js .
-```
-
-After the package is published to npm, run it directly with `npx`:
+Run it directly with `npx`:
 
 ```bash
 npx ai-codebase-doctor .
@@ -40,69 +32,71 @@ npm run build
 npm run doctor:example
 ```
 
-## Usage
-
-Scan the current project:
+To run the local build against this repository:
 
 ```bash
 node dist/cli.js .
 ```
 
+## Usage
+
+Scan the current project:
+
+```bash
+npx ai-codebase-doctor .
+```
+
 Write reports to a custom directory:
 
 ```bash
-node dist/cli.js ./path/to/project --out reports
+npx ai-codebase-doctor ./path/to/project --out reports
 ```
 
 Print JSON to stdout:
 
 ```bash
-node dist/cli.js . --json --no-files
+npx ai-codebase-doctor . --json --no-files
 ```
 
 Use CI mode to fail a job when critical findings exist:
 
 ```bash
-node dist/cli.js . --ci
+npx ai-codebase-doctor . --ci
 ```
 
 Choose report output:
 
 ```bash
-node dist/cli.js . --format all
-node dist/cli.js . --format json
+npx ai-codebase-doctor . --format all
+npx ai-codebase-doctor . --format json
 ```
 
 Choose failure policy:
 
 ```bash
-node dist/cli.js . --fail-on critical
-node dist/cli.js . --fail-on warning
-node dist/cli.js . --fail-on none
+npx ai-codebase-doctor . --fail-on critical
+npx ai-codebase-doctor . --fail-on warning
+npx ai-codebase-doctor . --fail-on none
 ```
 
 Select a framework profile:
 
 ```bash
-node dist/cli.js . --profile auto
-node dist/cli.js . --profile nextjs
+npx ai-codebase-doctor . --profile auto
+npx ai-codebase-doctor . --profile nextjs
 ```
 
 Opt into npm registry checks:
 
 ```bash
-node dist/cli.js . --online
+npx ai-codebase-doctor . --online
 ```
-
-Replace `node dist/cli.js` with `npx ai-codebase-doctor` after the npm package is published.
-
-npm publishing is pending until the release machine is authenticated with npm. Until then, use the local build or install from the GitHub repository.
 
 The scanner reads project files only by default. It does not execute target-project scripts and does not call an LLM API. Network checks only run when `--online` is explicitly passed.
 
 ## GitHub Actions
 
-After npm publishing, add a read-only CI check:
+Add a read-only CI check:
 
 ```yaml
 - uses: actions/setup-node@v4
@@ -111,7 +105,7 @@ After npm publishing, add a read-only CI check:
 - run: npx ai-codebase-doctor . --ci
 ```
 
-Before npm publishing, use the local build:
+For local development in this repository, use the local build:
 
 ```yaml
 - run: npm ci
