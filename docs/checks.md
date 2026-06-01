@@ -34,7 +34,6 @@
 | `DB002` | Database | critical | package script references Prisma setup that is incomplete. |
 | `DB003` | Database | warning | README mentions Drizzle but config/schema files are missing. |
 | `DB004` | Database | info | `DATABASE_URL` is documented without README setup guidance. |
-| `DB005` | Database | critical | Migration command exists but migration schema is missing. |
 
 ## Opt-in Online Checks
 

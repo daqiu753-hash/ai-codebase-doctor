@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.2
+
+Small false-positive and report-noise fix.
+
+- Avoid duplicate critical Prisma migration findings when `DB001` or `DB002` already explains the missing `prisma/schema.prisma` issue.
+
 ## v1.0.1
 
 Documentation and npm bin entry fix after the first npm publication.

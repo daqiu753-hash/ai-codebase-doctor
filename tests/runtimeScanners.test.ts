@@ -66,7 +66,7 @@ describe('runtime reality scanners', () => {
     const ids = report.findings.map((item) => item.id)
     expect(ids).toContain('DB001')
     expect(ids).toContain('DB002')
-    expect(ids).toContain('DB005')
+    expect(ids).not.toContain('DB005')
   })
 })
 

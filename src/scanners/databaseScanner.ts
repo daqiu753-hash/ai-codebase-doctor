@@ -87,22 +87,6 @@ export const databaseScanner: Scanner = {
       }
     }
 
-    if ((prismaLine || Object.values(scripts).some((script) => /prisma\s+migrate/.test(script))) && !hasPrismaSchema) {
-      findings.push({
-        id: 'DB005',
-        title: 'Migration command exists but migration schema is missing',
-        severity: 'critical',
-        category: 'database',
-        file: context.readmePath ?? context.packageJsonPath,
-        line: prismaLine,
-        evidence: 'Prisma migration command found without prisma/schema.prisma',
-        expected: 'Migration commands should have a schema file.',
-        actual: 'No Prisma schema file was found.',
-        whyItMatters: 'Migration commands cannot run without a schema.',
-        suggestedFix: 'Add prisma/schema.prisma or remove migration instructions.'
-      })
-    }
-
     return findings
   }
 }
