@@ -3,8 +3,9 @@
   "$id": "https://github.com/daqiu753-hash/ai-codebase-doctor/docs/report-schema.json",
   "title": "AI Codebase Doctor Report",
   "type": "object",
-  "required": ["score", "summary", "context", "findings"],
+  "required": ["schemaVersion", "score", "summary", "context", "findings"],
   "properties": {
+    "schemaVersion": { "const": "1.0.0" },
     "score": { "type": "number", "minimum": 0, "maximum": 100 },
     "summary": {
       "type": "object",
@@ -16,7 +17,42 @@
         "total": { "type": "number" }
       }
     },
-    "context": { "type": "object" },
+    "context": {
+      "type": "object",
+      "required": [
+        "rootPath",
+        "files",
+        "sourceFiles",
+        "testFiles",
+        "framework",
+        "detectedProfile",
+        "selectedProfile",
+        "options",
+        "packageManager"
+      ],
+      "properties": {
+        "rootPath": { "type": "string" },
+        "files": { "type": "array", "items": { "type": "string" } },
+        "readmePath": { "type": "string" },
+        "readmeText": { "type": "string" },
+        "packageJsonPath": { "type": "string" },
+        "packageJsonText": { "type": "string" },
+        "packageJson": { "type": "object" },
+        "envExamplePath": { "type": "string" },
+        "envExampleText": { "type": "string" },
+        "sourceFiles": { "type": "array", "items": { "type": "string" } },
+        "testFiles": { "type": "array", "items": { "type": "string" } },
+        "framework": { "enum": ["nextjs", "vite", "node", "python", "unknown"] },
+        "detectedProfile": {
+          "enum": ["auto", "nextjs", "vite", "express", "fastapi", "node", "python", "unknown"]
+        },
+        "selectedProfile": {
+          "enum": ["auto", "nextjs", "vite", "express", "fastapi", "node", "python", "unknown"]
+        },
+        "options": { "type": "object" },
+        "packageManager": { "enum": ["npm", "pnpm", "yarn", "bun", "unknown"] }
+      }
+    },
     "findings": {
       "type": "array",
       "items": {

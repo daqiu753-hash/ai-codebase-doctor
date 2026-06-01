@@ -1,5 +1,9 @@
 # AI Codebase Doctor
 
+[![CI](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/daqiu753-hash/ai-codebase-doctor)](https://github.com/daqiu753-hash/ai-codebase-doctor/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 AI can generate a repo in minutes.
 
 But can it actually run?
@@ -167,7 +171,7 @@ Generated files:
 | `fix-with-claude-code.md` | Repair prompt for Claude Code. |
 | `fix-with-cursor.md` | Repair prompt for Cursor. |
 
-See also [docs/report-schema.md](docs/report-schema.md), [docs/integrations.md](docs/integrations.md), [docs/demo.md](docs/demo.md), and [docs/field-test-report.md](docs/field-test-report.md).
+See also [docs/report-schema.md](docs/report-schema.md), [docs/ci.md](docs/ci.md), [docs/integrations.md](docs/integrations.md), [docs/demo.md](docs/demo.md), and [docs/field-test-report.md](docs/field-test-report.md).
 
 ## What it checks today
 

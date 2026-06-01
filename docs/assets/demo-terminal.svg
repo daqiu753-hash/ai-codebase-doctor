@@ -5,7 +5,7 @@
   <circle cx="46" cy="22" r="6" fill="#f59e0b"/>
   <circle cx="68" cy="22" r="6" fill="#22c55e"/>
   <text x="28" y="82" fill="#e5e7eb" font-family="Menlo, Consolas, monospace" font-size="20">AI Codebase Doctor</text>
-  <text x="28" y="124" fill="#f87171" font-family="Menlo, Consolas, monospace" font-size="18">Score: 0/100   Critical: 8   Warnings: 5   Info: 3</text>
+  <text x="28" y="124" fill="#f87171" font-family="Menlo, Consolas, monospace" font-size="18">Score: 0/100   Critical: 8   Warnings: 4   Info: 3</text>
   <text x="28" y="168" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[D001] Imported package not declared</text>
   <text x="28" y="198" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/lib/ai.ts imports @ai-sdk/openai</text>
   <text x="28" y="238" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[E001] Environment variable used but not documented</text>

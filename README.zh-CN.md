@@ -1,5 +1,9 @@
 # AI Codebase Doctor
 
+[![CI](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/daqiu753-hash/ai-codebase-doctor)](https://github.com/daqiu753-hash/ai-codebase-doctor/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 AI 可以在几分钟内生成一个 repo。
 
 但它真的能跑吗？
@@ -125,7 +129,7 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 - `fix-with-claude-code.md`
 - `fix-with-cursor.md`
 
-更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)、[docs/field-test-report.md](docs/field-test-report.md)。
+更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/ci.md](docs/ci.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)、[docs/field-test-report.md](docs/field-test-report.md)。
 
 ## 当前检查项
 

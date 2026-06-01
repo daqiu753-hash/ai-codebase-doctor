@@ -72,6 +72,7 @@ export type Scanner = {
 }
 
 export type DoctorReport = {
+  schemaVersion: '1.0.0'
   score: number
   summary: {
     critical: number

@@ -169,6 +169,7 @@ describe('framework profile scanners', () => {
 
 function emptyReport(rootPath: string): DoctorReport {
   return {
+    schemaVersion: '1.0.0',
     score: 100,
     summary: { critical: 0, warning: 0, info: 0, total: 0 },
     context: {

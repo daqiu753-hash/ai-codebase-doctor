@@ -23,6 +23,7 @@ export async function runDoctor(rootPath: string, options: RunDoctorOptions = {}
   )
 
   return {
+    schemaVersion: '1.0.0',
     score: scoreFindings(dedupedFindings),
     summary: summarizeFindings(dedupedFindings),
     context,

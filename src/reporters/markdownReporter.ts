@@ -5,6 +5,7 @@ export function renderMarkdownReport(report: DoctorReport): string {
   lines.push('# AI Codebase Doctor Report')
   lines.push('')
   lines.push(`**Score:** ${report.score}/100`)
+  lines.push(`**Schema version:** ${report.schemaVersion}`)
   lines.push('')
   lines.push('## Summary')
   lines.push('')
@@ -27,7 +28,7 @@ export function renderMarkdownReport(report: DoctorReport): string {
   lines.push('## Findings')
   lines.push('')
   if (report.findings.length === 0) {
-    lines.push('No findings detected by v0.1 scanners.')
+    lines.push('No findings detected.')
   } else {
     for (const finding of report.findings) {
       lines.push(`### [${finding.id}] ${finding.title}`)

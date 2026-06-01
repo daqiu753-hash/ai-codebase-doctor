@@ -3,6 +3,8 @@
   "version": "0.5.0",
   "description": "A CLI that audits AI-generated codebases and tells you why they won't run.",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "ai-codebase-doctor": "dist/cli.js"
   },
@@ -10,7 +12,14 @@
     "dist",
     "README.md",
     "README.zh-CN.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md",
+    "docs/checks.md",
+    "docs/ci.md",
+    "docs/known-limitations.md",
+    "docs/profiles.md",
+    "docs/report-schema.md",
+    "docs/report-schema.json"
   ],
   "scripts": {
     "dev": "tsx src/cli.ts",
@@ -34,10 +43,23 @@
     "static-analysis",
     "ai-generated-code",
     "repo-audit",
-    "developer-tools"
+    "developer-tools",
+    "ci",
+    "nextjs",
+    "vite",
+    "express",
+    "fastapi"
   ],
   "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daqiu753-hash/ai-codebase-doctor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daqiu753-hash/ai-codebase-doctor/issues"
+  },
+  "homepage": "https://github.com/daqiu753-hash/ai-codebase-doctor#readme",
   "dependencies": {
     "commander": "^12.1.0",
     "fast-glob": "^3.3.2"
