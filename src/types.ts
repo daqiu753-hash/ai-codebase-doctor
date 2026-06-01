@@ -38,6 +38,7 @@ export type ProjectContext = {
   readmePath?: string
   readmeText?: string
   packageJsonPath?: string
+  packageJsonText?: string
   packageJson?: PackageJson
   envExamplePath?: string
   envExampleText?: string

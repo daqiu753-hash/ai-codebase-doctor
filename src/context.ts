@@ -23,9 +23,13 @@ export async function detectProject(rootPath: string): Promise<ProjectContext> {
   const envExampleText = envExamplePath ? await safeRead(path.join(absoluteRoot, envExamplePath)) : undefined
 
   let packageJson: PackageJson | undefined
+  let packageJsonText: string | undefined
   if (packageJsonPath) {
     const raw = await safeRead(path.join(absoluteRoot, packageJsonPath))
-    if (raw) packageJson = JSON.parse(raw) as PackageJson
+    if (raw) {
+      packageJsonText = raw
+      packageJson = JSON.parse(raw) as PackageJson
+    }
   }
 
   const sourceFiles = files.filter((file) => {
@@ -41,6 +45,7 @@ export async function detectProject(rootPath: string): Promise<ProjectContext> {
     readmePath,
     readmeText,
     packageJsonPath,
+    packageJsonText,
     packageJson,
     envExamplePath,
     envExampleText,

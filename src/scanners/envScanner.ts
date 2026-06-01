@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import type { Finding, Scanner } from '../types.js'
+import { stripLineComment } from '../lineUtils.js'
 
 export const envScanner: Scanner = {
   id: 'env',
@@ -8,26 +9,28 @@ export const envScanner: Scanner = {
   async scan(context) {
     const findings: Finding[] = []
     const documented = parseEnvExample(context.envExampleText ?? '')
-    const used = new Map<string, string[]>()
+    const used = new Map<string, Array<{ file: string; line: number }>>()
 
     for (const file of context.sourceFiles) {
       const content = await fs.readFile(path.join(context.rootPath, file), 'utf8')
-      for (const envName of extractEnvVars(content)) {
-        const files = used.get(envName) ?? []
-        files.push(file)
-        used.set(envName, files)
+      for (const envVar of extractEnvVars(content)) {
+        const occurrences = used.get(envVar.value) ?? []
+        occurrences.push({ file, line: envVar.line })
+        used.set(envVar.value, occurrences)
       }
     }
 
-    for (const [envName, files] of used.entries()) {
+    for (const [envName, occurrences] of used.entries()) {
       if (!documented.has(envName)) {
+        const firstOccurrence = occurrences[0]
         findings.push({
           id: 'E001',
           title: 'Environment variable used but not documented',
           severity: 'critical',
           category: 'env',
-          file: files[0],
-          evidence: `${files[0]} uses ${envName}`,
+          file: firstOccurrence?.file,
+          line: firstOccurrence?.line,
+          evidence: `${firstOccurrence?.file} uses ${envName}`,
           expected: `${envName} should be documented in .env.example`,
           actual: context.envExamplePath ? `${envName} not found in ${context.envExamplePath}` : 'No .env.example file found',
           whyItMatters: 'Missing environment documentation is one of the most common reasons an AI-generated repo cannot be started by another developer.',
@@ -39,12 +42,14 @@ export const envScanner: Scanner = {
 
     for (const envName of documented) {
       if (!used.has(envName)) {
+        const line = context.envExampleText ? findDocumentedEnvLine(context.envExampleText, envName) : undefined
         findings.push({
           id: 'E002',
           title: 'Environment variable documented but not used',
           severity: 'info',
           category: 'env',
           file: context.envExamplePath,
+          line,
           evidence: `.env.example documents ${envName}`,
           expected: 'Documented env vars should match real code usage.',
           actual: `${envName} was not found in source files.`,
@@ -70,8 +75,17 @@ function parseEnvExample(text: string): Set<string> {
   return result
 }
 
-function extractEnvVars(content: string): Set<string> {
-  const result = new Set<string>()
+function findDocumentedEnvLine(text: string, envName: string): number | undefined {
+  for (const [index, line] of text.split(/\r?\n/).entries()) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) continue
+    if (new RegExp(`^${envName}\\s*=`).test(trimmed)) return index + 1
+  }
+  return undefined
+}
+
+function extractEnvVars(content: string): Array<{ value: string; line: number }> {
+  const result = new Map<string, { value: string; line: number }>()
   const patterns = [
     /process\.env\.([A-Z0-9_]+)/g,
     /process\.env\[['"]([A-Z0-9_]+)['"]\]/g,
@@ -79,11 +93,17 @@ function extractEnvVars(content: string): Set<string> {
     /os\.getenv\(['"]([A-Z0-9_]+)['"]\)/g,
     /getenv\(['"]([A-Z0-9_]+)['"]\)/g
   ]
-  for (const pattern of patterns) {
-    let match: RegExpExecArray | null
-    while ((match = pattern.exec(content))) {
-      result.add(match[1])
+  for (const [index, rawLine] of content.split(/\r?\n/).entries()) {
+    const line = stripLineComment(rawLine)
+    for (const pattern of patterns) {
+      pattern.lastIndex = 0
+      let match: RegExpExecArray | null
+      while ((match = pattern.exec(line))) {
+        if (match[1] && !result.has(match[1])) {
+          result.set(match[1], { value: match[1], line: index + 1 })
+        }
+      }
     }
   }
-  return result
+  return Array.from(result.values())
 }

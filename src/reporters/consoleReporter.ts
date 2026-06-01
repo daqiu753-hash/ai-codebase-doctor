@@ -25,6 +25,7 @@ export function renderConsoleReport(report: DoctorReport): string {
     lines.push(`[${finding.id}] ${finding.title}`)
     lines.push(`Severity: ${finding.severity}`)
     if (finding.file) lines.push(`File: ${finding.file}`)
+    if (finding.line) lines.push(`Line: ${finding.line}`)
     lines.push(`Evidence: ${finding.evidence}`)
     lines.push(`Fix: ${finding.suggestedFix}`)
     lines.push('')

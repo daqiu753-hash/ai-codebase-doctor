@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import type { Finding, Scanner } from '../types.js'
+import { findFirstMatchingLine } from '../lineUtils.js'
 
 export const testRealityScanner: Scanner = {
   id: 'test-reality',
@@ -17,6 +18,7 @@ export const testRealityScanner: Scanner = {
           severity: 'warning',
           category: 'tests',
           file,
+          line: findFirstMatchingLine(content, /\b(describe|it|test)\s*\(/),
           evidence: `${file} contains test structure but no obvious assertion.`,
           expected: 'Tests should include expect/assert/should or equivalent assertions.',
           actual: 'No assertion pattern was found.',

@@ -1,5 +1,6 @@
 import path from 'node:path'
 import type { Finding, Scanner } from '../types.js'
+import { findLineNumber } from '../lineUtils.js'
 
 export const scriptScanner: Scanner = {
   id: 'scripts',
@@ -20,6 +21,7 @@ export const scriptScanner: Scanner = {
             severity: 'critical',
             category: 'scripts',
             file: context.packageJsonPath,
+            line: context.packageJsonText ? findLineNumber(context.packageJsonText, `"${scriptName}"`) : undefined,
             evidence: `script "${scriptName}": ${command}`,
             expected: `Referenced file should exist: ${file}`,
             actual: 'File was not found in the project.',

@@ -14,6 +14,12 @@ As a developer using Codex / Claude Code / Cursor / Windsurf, I want to run one 
 npx ai-codebase-doctor .
 ```
 
+CI mode should fail only when critical findings exist:
+
+```bash
+npx ai-codebase-doctor . --ci
+```
+
 ## v0.1 findings
 
 | ID | Category | Severity | Meaning |
@@ -31,6 +37,14 @@ npx ai-codebase-doctor .
 - CLI prints score and findings.
 - CLI writes Markdown and JSON reports.
 - CLI writes fix prompts for Codex, Claude Code, and Cursor.
+- CLI supports `--ci` mode that exits non-zero when critical findings exist.
+- Findings include best-effort line numbers when practical.
 - Example broken app produces multiple findings.
 - `npm run build` passes.
 - `npm test` passes after scanner tests are added.
+
+## Known limitations
+
+- v0.1 scanners are deterministic and regex-based, not full language parsers.
+- Import detection is focused on common JS/TS import forms and ignores common virtual imports.
+- README command checks target package script commands, not arbitrary shell command validation.

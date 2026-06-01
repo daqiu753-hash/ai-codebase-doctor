@@ -33,6 +33,7 @@ export function renderMarkdownReport(report: DoctorReport): string {
       lines.push(`- Severity: ${finding.severity}`)
       lines.push(`- Category: ${finding.category}`)
       if (finding.file) lines.push(`- File: ${finding.file}`)
+      if (finding.line) lines.push(`- Line: ${finding.line}`)
       lines.push(`- Evidence: ${finding.evidence}`)
       if (finding.expected) lines.push(`- Expected: ${finding.expected}`)
       if (finding.actual) lines.push(`- Actual: ${finding.actual}`)

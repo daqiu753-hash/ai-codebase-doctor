@@ -16,7 +16,8 @@ program
   .option('--out <dir>', 'Output directory for reports', 'doctor-reports')
   .option('--json', 'Print JSON report to stdout')
   .option('--no-files', 'Do not write report files')
-  .action(async (targetPath: string, options: { out: string; json?: boolean; files: boolean }) => {
+  .option('--ci', 'Exit with a non-zero status when critical findings are present')
+  .action(async (targetPath: string, options: { out: string; json?: boolean; files: boolean; ci?: boolean }) => {
     const report = await runDoctor(targetPath)
 
     if (options.json) {
@@ -34,6 +35,10 @@ program
       await fs.writeFile(path.join(outDir, 'fix-with-claude-code.md'), renderAgentFixPrompt(report, 'claude-code'), 'utf8')
       await fs.writeFile(path.join(outDir, 'fix-with-cursor.md'), renderAgentFixPrompt(report, 'cursor'), 'utf8')
       console.log(`\nReports generated in ${outDir}`)
+    }
+
+    if (options.ci && report.summary.critical > 0) {
+      process.exitCode = 1
     }
   })
 
