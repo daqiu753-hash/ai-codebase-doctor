@@ -8,6 +8,8 @@ But can it actually run?
 
 It is not a generic linter. It is a deterministic, read-only reality check for repos that look finished but may not install, configure, test, or start.
 
+![Demo terminal output](docs/assets/demo-terminal.svg)
+
 ## Installation
 
 Local usage before the first npm release:
@@ -56,6 +58,21 @@ Use CI mode to fail a job when critical findings exist:
 
 ```bash
 node dist/cli.js . --ci
+```
+
+Choose report output:
+
+```bash
+node dist/cli.js . --format all
+node dist/cli.js . --format json
+```
+
+Choose failure policy:
+
+```bash
+node dist/cli.js . --fail-on critical
+node dist/cli.js . --fail-on warning
+node dist/cli.js . --fail-on none
 ```
 
 Select a framework profile:
@@ -126,6 +143,8 @@ Generated files:
 | `fix-with-codex.md` | Repair prompt for Codex. |
 | `fix-with-claude-code.md` | Repair prompt for Claude Code. |
 | `fix-with-cursor.md` | Repair prompt for Cursor. |
+
+See also [docs/report-schema.md](docs/report-schema.md), [docs/integrations.md](docs/integrations.md), and [docs/demo.md](docs/demo.md).
 
 ## What it checks today
 

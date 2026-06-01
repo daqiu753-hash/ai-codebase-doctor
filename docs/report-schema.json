@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/daqiu753-hash/ai-codebase-doctor/docs/report-schema.json",
+  "title": "AI Codebase Doctor Report",
+  "type": "object",
+  "required": ["score", "summary", "context", "findings"],
+  "properties": {
+    "score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "summary": {
+      "type": "object",
+      "required": ["critical", "warning", "info", "total"],
+      "properties": {
+        "critical": { "type": "number" },
+        "warning": { "type": "number" },
+        "info": { "type": "number" },
+        "total": { "type": "number" }
+      }
+    },
+    "context": { "type": "object" },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "severity", "category", "evidence", "whyItMatters", "suggestedFix"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "severity": { "enum": ["critical", "warning", "info"] },
+          "category": { "type": "string" },
+          "file": { "type": "string" },
+          "line": { "type": "number" },
+          "evidence": { "type": "string" },
+          "expected": { "type": "string" },
+          "actual": { "type": "string" },
+          "whyItMatters": { "type": "string" },
+          "suggestedFix": { "type": "string" },
+          "agentPrompt": { "type": "string" }
+        }
+      }
+    }
+  }
+}

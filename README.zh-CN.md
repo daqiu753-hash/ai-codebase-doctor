@@ -6,6 +6,8 @@ AI 可以在几分钟内生成一个 repo。
 
 `ai-codebase-doctor` 是一个面向 AI 生成代码库的只读、确定性 CLI 检查工具。它检查的不是代码风格，而是项目是否真的自洽：依赖是否幻觉、脚本是否损坏、环境变量是否缺文档、测试是否只是空壳、README 里的运行说明是否在说谎。
 
+![Demo terminal output](docs/assets/demo-terminal.svg)
+
 ## 安装与使用
 
 首次 npm 发布前，本地使用：
@@ -32,6 +34,14 @@ CI 模式会在存在 `critical` findings 时返回非 `0`：
 
 ```bash
 node dist/cli.js . --ci
+```
+
+选择输出格式和失败策略：
+
+```bash
+node dist/cli.js . --format all
+node dist/cli.js . --fail-on warning
+node dist/cli.js . --fail-on none
 ```
 
 选择 framework profile：
@@ -91,6 +101,8 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 - `fix-with-codex.md`
 - `fix-with-claude-code.md`
 - `fix-with-cursor.md`
+
+更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)。
 
 ## 当前检查项
 
