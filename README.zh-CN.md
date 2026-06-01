@@ -34,6 +34,13 @@ CI 模式会在存在 `critical` findings 时返回非 `0`：
 node dist/cli.js . --ci
 ```
 
+选择 framework profile：
+
+```bash
+node dist/cli.js . --profile auto
+node dist/cli.js . --profile nextjs
+```
+
 显式开启 npm registry 检查：
 
 ```bash
@@ -98,6 +105,8 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 
 runtime checks 还覆盖 package manager mismatch、Node/Docker 版本漂移、Docker command、Prisma/Drizzle setup 和 opt-in npm registry 检查。详见 [docs/checks.md](docs/checks.md)。
 
+framework profiles 提供 Next.js、Vite、Express、FastAPI 的 best-effort 检查。详见 [docs/profiles.md](docs/profiles.md)。
+
 ## 它不是什么
 
 它不是 ESLint、Semgrep、Gitleaks 或 Knip 的替代品。那些工具分别擅长代码规则、安全模式、secret 检测和未使用代码清理；`ai-codebase-doctor` 专注检查 AI 生成项目是否真的能安装、配置、测试和启动。
@@ -106,10 +115,7 @@ runtime checks 还覆盖 package manager mismatch、Node/Docker 版本漂移、D
 
 ## 已知限制
 
-- import / README / env 检测保持轻量，复杂多行写法可能漏报。
-- 行号是 best-effort，重复出现时可能指向第一个匹配位置。
-- runtime checks 是 best-effort，刻意保持保守，避免变成 generic linter。
-- v0.1 主要面向 Node.js / JS / TS，Python 只覆盖环境变量基础场景。
+见 [docs/known-limitations.md](docs/known-limitations.md)。
 
 ## Roadmap
 

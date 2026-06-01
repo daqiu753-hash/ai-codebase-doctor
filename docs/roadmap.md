@@ -29,7 +29,8 @@
 - Next.js profile
 - Vite + Express profile
 - FastAPI profile
-- GitHub Action
+- best-effort API path checks
+- GitHub Action docs
 
 ## v1.0: Stable public release
 
