@@ -4,14 +4,15 @@
   <circle cx="24" cy="22" r="6" fill="#ef4444"/>
   <circle cx="46" cy="22" r="6" fill="#f59e0b"/>
   <circle cx="68" cy="22" r="6" fill="#22c55e"/>
-  <text x="28" y="82" fill="#e5e7eb" font-family="Menlo, Consolas, monospace" font-size="20">AI Codebase Doctor</text>
-  <text x="28" y="124" fill="#f87171" font-family="Menlo, Consolas, monospace" font-size="18">Score: 0/100   Critical: 8   Warnings: 4   Info: 3</text>
-  <text x="28" y="168" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[D001] Imported package not declared</text>
-  <text x="28" y="198" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/lib/ai.ts imports @ai-sdk/openai</text>
-  <text x="28" y="238" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[E001] Environment variable used but not documented</text>
-  <text x="28" y="268" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/lib/db.ts uses DATABASE_URL</text>
-  <text x="28" y="308" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[A001] Frontend API route has no obvious backend route</text>
-  <text x="28" y="338" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/app/page.tsx calls /api/customers</text>
-  <text x="28" y="388" fill="#a7f3d0" font-family="Menlo, Consolas, monospace" font-size="15">Reports generated in ./reports</text>
-  <text x="28" y="430" fill="#9ca3af" font-family="Menlo, Consolas, monospace" font-size="14">Deterministic. Read-only by default. Built for AI-generated repo reality checks.</text>
+  <text x="28" y="78" fill="#9ca3af" font-family="Menlo, Consolas, monospace" font-size="15">$ npx ai-codebase-doctor examples/ai-generated-fake-saas --out reports</text>
+  <text x="28" y="124" fill="#e5e7eb" font-family="Menlo, Consolas, monospace" font-size="20">AI Codebase Doctor</text>
+  <text x="28" y="166" fill="#f87171" font-family="Menlo, Consolas, monospace" font-size="18">Score: 0/100   Critical: 8   Warnings: 4   Info: 3</text>
+  <text x="28" y="210" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[D001] Imported package not declared</text>
+  <text x="28" y="240" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/lib/ai.ts imports @ai-sdk/openai</text>
+  <text x="28" y="280" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[E001] Environment variable used but not documented</text>
+  <text x="28" y="310" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/lib/db.ts uses DATABASE_URL</text>
+  <text x="28" y="350" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[R001] README command not found</text>
+  <text x="28" y="380" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">README says: pnpm dev</text>
+  <text x="28" y="430" fill="#a7f3d0" font-family="Menlo, Consolas, monospace" font-size="15">Reports generated in ./reports</text>
+  <text x="28" y="470" fill="#9ca3af" font-family="Menlo, Consolas, monospace" font-size="14">Read-only by default. Offline by default. No target scripts. No LLM API calls.</text>
 </svg>

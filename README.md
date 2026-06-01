@@ -1,5 +1,7 @@
 # AI Codebase Doctor
 
+[![npm version](https://img.shields.io/npm/v/ai-codebase-doctor)](https://www.npmjs.com/package/ai-codebase-doctor)
+[![npm downloads](https://img.shields.io/npm/dm/ai-codebase-doctor)](https://www.npmjs.com/package/ai-codebase-doctor)
 [![CI](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/daqiu753-hash/ai-codebase-doctor)](https://github.com/daqiu753-hash/ai-codebase-doctor/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -15,6 +17,25 @@ It is not a generic linter. It is a deterministic, read-only reality check for r
 The scanner is best-effort and conservative by design: it favors concrete, explainable mismatches over broad static-analysis coverage.
 
 ![Demo terminal output](docs/assets/demo-terminal.svg)
+
+```bash
+npx ai-codebase-doctor .
+```
+
+Try it on the included broken AI-generated SaaS fixture:
+
+```bash
+npx ai-codebase-doctor examples/ai-generated-fake-saas --out reports
+```
+
+```text
+Score: 0/100
+Critical: 8
+Warnings: 4
+Info: 3
+
+Reports generated in ./reports
+```
 
 ## Installation
 
@@ -220,6 +241,10 @@ Near-term focus:
 - secret-lite checks without becoming a secret scanner
 - frontend/backend API path mismatch detection
 - better line-number evidence
+
+## Launch Notes
+
+Short launch copy is available in [docs/launch](docs/launch/).
 
 ## Philosophy
 

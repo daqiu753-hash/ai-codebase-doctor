@@ -1,5 +1,7 @@
 # AI Codebase Doctor
 
+[![npm version](https://img.shields.io/npm/v/ai-codebase-doctor)](https://www.npmjs.com/package/ai-codebase-doctor)
+[![npm downloads](https://img.shields.io/npm/dm/ai-codebase-doctor)](https://www.npmjs.com/package/ai-codebase-doctor)
 [![CI](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/daqiu753-hash/ai-codebase-doctor)](https://github.com/daqiu753-hash/ai-codebase-doctor/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -11,6 +13,25 @@ AI 可以在几分钟内生成一个 repo。
 `ai-codebase-doctor` 是一个面向 AI 生成代码库的只读、确定性 CLI 检查工具。它检查的不是代码风格，而是项目是否真的自洽：依赖是否幻觉、脚本是否损坏、环境变量是否缺文档、测试是否只是空壳、README 里的运行说明是否在说谎。
 
 ![Demo terminal output](docs/assets/demo-terminal.svg)
+
+```bash
+npx ai-codebase-doctor .
+```
+
+试扫仓库内置的 broken AI-generated SaaS 示例：
+
+```bash
+npx ai-codebase-doctor examples/ai-generated-fake-saas --out reports
+```
+
+```text
+Score: 0/100
+Critical: 8
+Warnings: 4
+Info: 3
+
+Reports generated in ./reports
+```
 
 ## 安装与使用
 
@@ -153,6 +174,10 @@ framework profiles 提供 Next.js、Vite、Express、FastAPI 的 best-effort 检
 ## Roadmap
 
 见 [docs/roadmap.md](docs/roadmap.md)。
+
+## 传播文案
+
+见 [docs/launch](docs/launch/)。
 
 ## License
 
