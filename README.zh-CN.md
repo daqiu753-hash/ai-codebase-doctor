@@ -146,7 +146,7 @@ framework profiles 提供 Next.js、Vite、Express、FastAPI 的 best-effort 检
 
 它不是 ESLint、Semgrep、Gitleaks 或 Knip 的替代品。那些工具分别擅长代码规则、安全模式、secret 检测和未使用代码清理；`ai-codebase-doctor` 专注检查 AI 生成项目是否真的能安装、配置、测试和启动。
 
-它也不是自动修复工具、LLM wrapper 或完整静态分析器。
+它也不是自动修复工具、LLM wrapper、完整静态分析器或完整 API contract verifier。
 
 ## 已知限制
 

@@ -135,6 +135,7 @@ async function scanExpressProfile(context: Parameters<Scanner['scan']>[0]): Prom
   const findings: Finding[] = []
   const deps = allDeps(context)
   const importsExpress = await sourceContains(context, /\bfrom\s+['"]express['"]|require\(['"]express['"]\)/)
+  const expressRoute = await sourceContains(context, /\b(?:app|router)\.(?:get|post|put|patch|delete|all)\(\s*['"]/)
   if (importsExpress && !deps.express) {
     findings.push({
       id: 'EX002',
@@ -148,6 +149,22 @@ async function scanExpressProfile(context: Parameters<Scanner['scan']>[0]): Prom
       actual: 'express dependency was not found.',
       whyItMatters: 'An Express server cannot start if express is not installed.',
       suggestedFix: 'Install express or remove stale server code.'
+    })
+  }
+
+  if ((importsExpress || deps.express) && !expressRoute) {
+    findings.push({
+      id: 'EX004',
+      title: 'Express app has no obvious route definitions',
+      severity: 'warning',
+      category: 'profile',
+      file: importsExpress?.file ?? context.packageJsonPath,
+      line: importsExpress?.line,
+      evidence: importsExpress ? `${importsExpress.file} imports express` : 'package.json declares express',
+      expected: 'An Express app should define at least one obvious app.* or router.* route.',
+      actual: 'No app.get/app.post/router.get/router.post style route was found.',
+      whyItMatters: 'AI-generated Express servers sometimes initialize the framework but forget to wire routes.',
+      suggestedFix: 'Add route handlers or update project metadata if Express is not actually used.'
     })
   }
 
@@ -197,6 +214,7 @@ async function scanFastApiProfile(context: Parameters<Scanner['scan']>[0]): Prom
 
   const importsFastApi = await sourceContains(context, /\bfrom\s+fastapi\s+import\b|\bimport\s+fastapi\b/)
   const hasFastApiDependency = await pythonDepsMention(context, 'fastapi')
+  const fastApiRoute = await sourceContains(context, /@(?:app|router)\.(?:get|post|put|patch|delete)\(\s*['"]/)
   if (importsFastApi && !hasFastApiDependency) {
     findings.push({
       id: 'FA002',
@@ -210,6 +228,22 @@ async function scanFastApiProfile(context: Parameters<Scanner['scan']>[0]): Prom
       actual: 'No fastapi dependency metadata was found.',
       whyItMatters: 'A FastAPI app cannot install cleanly without dependency metadata.',
       suggestedFix: 'Add fastapi to requirements.txt or pyproject.toml.'
+    })
+  }
+
+  if ((importsFastApi || hasFastApiDependency) && !fastApiRoute) {
+    findings.push({
+      id: 'FA003',
+      title: 'FastAPI app has no obvious route decorators',
+      severity: 'warning',
+      category: 'profile',
+      file: importsFastApi?.file,
+      line: importsFastApi?.line,
+      evidence: importsFastApi ? `${importsFastApi.file} imports fastapi` : 'FastAPI dependency metadata exists',
+      expected: 'A FastAPI app should usually define at least one @app.* or @router.* route decorator.',
+      actual: 'No obvious FastAPI route decorator was found.',
+      whyItMatters: 'Generated FastAPI services sometimes create an app object but forget route handlers.',
+      suggestedFix: 'Add route decorators or remove stale FastAPI setup.'
     })
   }
 

@@ -18,10 +18,10 @@ node dist/cli.js . --profile fastapi
 
 | Profile | Best-effort signals | Extra checks |
 |---|---|---|
-| `nextjs` | `next` dependency, `src/app`, `pages/api` | expected scripts, public env prefix, API route files |
-| `vite` | `vite` dependency, `vite.config.*` | `VITE_` env prefix, entry file presence |
-| `express` | `express` imports/dependency, server entry files | missing dependency and missing server entry checks |
-| `fastapi` | Python files, `requirements.txt`, FastAPI imports | uvicorn entrypoint and dependency metadata checks |
+| `nextjs` | `next` dependency, `src/app`, `pages/api` | expected scripts, public env prefix, `app/api` and `pages/api` path checks |
+| `vite` | `vite` dependency, `vite.config.*`, `index.html`, `src/main.*` | `VITE_` env prefix, entry file presence |
+| `express` | `express` imports/dependency, server entry files | missing dependency, missing server entry, and basic `app.*` / `router.*` route checks |
+| `fastapi` | Python files, `requirements.txt`, `pyproject.toml`, FastAPI imports | `uvicorn` entrypoint, dependency metadata, and basic route decorator checks |
 
 ## API Path Checks
 
@@ -33,3 +33,5 @@ axios.get('/api/customers')
 ```
 
 It then compares those paths with obvious Next.js, Express, or FastAPI route definitions. This is intentionally conservative and should be treated as a missing-route smoke test, not complete API contract validation.
+
+The checker does not validate methods, request payloads, response bodies, auth behavior, route middleware, rewrites, proxies, or generated OpenAPI schemas.

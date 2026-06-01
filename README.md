@@ -199,6 +199,7 @@ Use those tools too. `ai-codebase-doctor` checks a different layer: whether an A
 
 - Not a replacement for ESLint, TypeScript, tests, security scanners, or dependency audits.
 - Not a full static analyzer.
+- Not a full API contract verifier.
 - Not an automatic repair tool.
 - Not an LLM wrapper.
 - Not a guarantee that the app is production-ready.

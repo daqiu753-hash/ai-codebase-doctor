@@ -46,3 +46,21 @@ Online checks are disabled by default. They only run when `--online` is passed.
 | `D005` | Dependencies | info | npm registry check failed or timed out. |
 
 `--online` should not be used for deterministic offline CI unless network access is expected.
+
+## Profile Smoke Checks
+
+| ID | Area | Default | Meaning |
+|---|---|---:|---|
+| `NX002` | Next.js | warning | Client component uses a non-`NEXT_PUBLIC_` env var. |
+| `NX003` | Next.js | warning | `next` is present but an expected lifecycle script is missing. |
+| `NX004` | Next.js | warning | README mentions Next.js but `next` is not declared. |
+| `VT001` | Vite | warning | Client env var does not use the `VITE_` prefix. |
+| `VT002` | Vite | warning | Vite dependency exists but a basic entry file is missing. |
+| `VT003` | Vite | warning | README mentions Vite but `vite` is not declared. |
+| `EX002` | Express | critical | Server imports Express but dependency metadata is missing. |
+| `EX003` | Express | critical | Server script references a missing entry file. |
+| `EX004` | Express | warning | Express app has no obvious route definitions. |
+| `FA001` | FastAPI | critical | README `uvicorn` command does not match the app entrypoint. |
+| `FA002` | FastAPI | critical | Python imports FastAPI but dependency metadata is missing. |
+| `FA003` | FastAPI | warning | FastAPI app has no obvious route decorators. |
+| `FA004` | FastAPI | warning | README mentions FastAPI but no FastAPI code or dependency was found. |
