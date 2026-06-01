@@ -1,6 +1,6 @@
 {
   "name": "ai-codebase-doctor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI that audits AI-generated codebases and tells you why they won't run.",
   "type": "module",
   "main": "dist/index.js",
