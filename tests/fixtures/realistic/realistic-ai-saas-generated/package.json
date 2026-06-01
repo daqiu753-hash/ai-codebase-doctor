@@ -1,0 +1,19 @@
+{
+  "name": "realistic-ai-saas-generated",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.0",
+    "tsx": "^4.16.2"
+  }
+}

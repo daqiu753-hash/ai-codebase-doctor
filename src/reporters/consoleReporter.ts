@@ -19,7 +19,7 @@ export function renderConsoleReport(report: DoctorReport): string {
   lines.push('')
 
   if (report.findings.length === 0) {
-    lines.push('No findings detected by v0.1 scanners.')
+    lines.push('No findings detected.')
     return lines.join('\n')
   }
 

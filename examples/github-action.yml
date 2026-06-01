@@ -13,4 +13,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      # Use --online only if your CI is allowed to reach the npm registry.
       - run: npx ai-codebase-doctor . --ci

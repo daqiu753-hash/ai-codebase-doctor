@@ -11,7 +11,7 @@ Expected summary:
 ```text
 Score: 0/100
 Critical: 8
-Warnings: 5
+Warnings: 4
 Info: 3
 ```
 

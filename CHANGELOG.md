@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.0.0
+
+Stable public release.
+
+- Stable CLI options: `--ci`, `--fail-on`, `--format`, `--profile`, and `--online`.
+- Stable JSON report schema with `schemaVersion`.
+- Conservative framework profiles for Next.js, Vite, Express, and FastAPI.
+- Runtime, Docker, database, dependency, env, README, script, API path, and test reality checks.
+- GitHub Actions and CI documentation.
+- Realistic fixtures and field test records.
+- False-positive policy and scanner quality documentation.
+- Public contribution, security, issue, and pull request templates.
+
+npm publishing remains pending until npm authentication is completed on the release machine.
+
 ## v0.5.0
 
 Developer workflow release.

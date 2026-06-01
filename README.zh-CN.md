@@ -1,5 +1,9 @@
 # AI Codebase Doctor
 
+[![CI](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/daqiu753-hash/ai-codebase-doctor)](https://github.com/daqiu753-hash/ai-codebase-doctor/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 AI 可以在几分钟内生成一个 repo。
 
 但它真的能跑吗？
@@ -67,6 +71,31 @@ npm run doctor:example
 
 默认扫描过程只读取文件，不执行目标项目里的 scripts，也不调用 LLM API。只有显式传入 `--online` 时才会访问 npm registry。
 
+npm 发布仍等待 release machine 完成 npm 登录认证；在此之前请使用本地构建或从 GitHub 仓库安装。
+
+scanner 是 best-effort 且偏保守的：优先报告具体、可解释的项目现实不一致，而不是做宽泛静态分析。
+
+## GitHub Actions
+
+发布到 npm 后：
+
+```yaml
+- uses: actions/setup-node@v4
+  with:
+    node-version: 20
+- run: npx ai-codebase-doctor . --ci
+```
+
+npm 发布前可使用本地构建：
+
+```yaml
+- run: npm ci
+- run: npm run build
+- run: node dist/cli.js . --ci
+```
+
+更多 CI 说明见 [docs/ci.md](docs/ci.md)。
+
 ## 示例输出
 
 ```text
@@ -102,7 +131,7 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 - `fix-with-claude-code.md`
 - `fix-with-cursor.md`
 
-更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)。
+更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/ci.md](docs/ci.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)、[docs/field-test-report.md](docs/field-test-report.md)。
 
 ## 当前检查项
 
@@ -123,11 +152,13 @@ framework profiles 提供 Next.js、Vite、Express、FastAPI 的 best-effort 检
 
 它不是 ESLint、Semgrep、Gitleaks 或 Knip 的替代品。那些工具分别擅长代码规则、安全模式、secret 检测和未使用代码清理；`ai-codebase-doctor` 专注检查 AI 生成项目是否真的能安装、配置、测试和启动。
 
-它也不是自动修复工具、LLM wrapper 或完整静态分析器。
+它也不是自动修复工具、LLM wrapper、完整静态分析器或完整 API contract verifier。
 
 ## 已知限制
 
 见 [docs/known-limitations.md](docs/known-limitations.md)。
+
+误报治理与 scanner 质量标准见 [docs/false-positive-policy.md](docs/false-positive-policy.md)、[docs/scanner-quality.md](docs/scanner-quality.md)。
 
 ## Roadmap
 

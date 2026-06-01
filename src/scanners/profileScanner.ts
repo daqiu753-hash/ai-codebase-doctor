@@ -56,25 +56,6 @@ async function scanNextProfile(context: Parameters<Scanner['scan']>[0]): Promise
     })
   }
 
-  const routes = extractNextApiRoutes(context.files)
-  const frontendApiCalls = await extractFrontendApiCalls(context)
-  if (frontendApiCalls.length > 0 && routes.size === 0) {
-    const first = frontendApiCalls[0]
-    findings.push({
-      id: 'NX001',
-      title: 'Frontend API calls have no obvious Next.js API routes',
-      severity: 'warning',
-      category: 'profile',
-      file: first?.file,
-      line: first?.line,
-      evidence: `${first?.file} calls ${first?.path}`,
-      expected: 'A matching app/api or pages/api route should exist.',
-      actual: 'No Next.js API route files were found.',
-      whyItMatters: 'AI-generated frontend pages often call API routes that were never created.',
-      suggestedFix: 'Create the matching route file or update the frontend API call.'
-    })
-  }
-
   for (const issue of await findClientEnvPrefixIssues(context, 'NEXT_PUBLIC_')) {
     findings.push({
       id: 'NX002',
@@ -154,6 +135,7 @@ async function scanExpressProfile(context: Parameters<Scanner['scan']>[0]): Prom
   const findings: Finding[] = []
   const deps = allDeps(context)
   const importsExpress = await sourceContains(context, /\bfrom\s+['"]express['"]|require\(['"]express['"]\)/)
+  const expressRoute = await sourceContains(context, /\b(?:app|router)\.(?:get|post|put|patch|delete|all)\(\s*['"]/)
   if (importsExpress && !deps.express) {
     findings.push({
       id: 'EX002',
@@ -167,6 +149,22 @@ async function scanExpressProfile(context: Parameters<Scanner['scan']>[0]): Prom
       actual: 'express dependency was not found.',
       whyItMatters: 'An Express server cannot start if express is not installed.',
       suggestedFix: 'Install express or remove stale server code.'
+    })
+  }
+
+  if ((importsExpress || deps.express) && !expressRoute) {
+    findings.push({
+      id: 'EX004',
+      title: 'Express app has no obvious route definitions',
+      severity: 'warning',
+      category: 'profile',
+      file: importsExpress?.file ?? context.packageJsonPath,
+      line: importsExpress?.line,
+      evidence: importsExpress ? `${importsExpress.file} imports express` : 'package.json declares express',
+      expected: 'An Express app should define at least one obvious app.* or router.* route.',
+      actual: 'No app.get/app.post/router.get/router.post style route was found.',
+      whyItMatters: 'AI-generated Express servers sometimes initialize the framework but forget to wire routes.',
+      suggestedFix: 'Add route handlers or update project metadata if Express is not actually used.'
     })
   }
 
@@ -216,6 +214,7 @@ async function scanFastApiProfile(context: Parameters<Scanner['scan']>[0]): Prom
 
   const importsFastApi = await sourceContains(context, /\bfrom\s+fastapi\s+import\b|\bimport\s+fastapi\b/)
   const hasFastApiDependency = await pythonDepsMention(context, 'fastapi')
+  const fastApiRoute = await sourceContains(context, /@(?:app|router)\.(?:get|post|put|patch|delete)\(\s*['"]/)
   if (importsFastApi && !hasFastApiDependency) {
     findings.push({
       id: 'FA002',
@@ -229,6 +228,22 @@ async function scanFastApiProfile(context: Parameters<Scanner['scan']>[0]): Prom
       actual: 'No fastapi dependency metadata was found.',
       whyItMatters: 'A FastAPI app cannot install cleanly without dependency metadata.',
       suggestedFix: 'Add fastapi to requirements.txt or pyproject.toml.'
+    })
+  }
+
+  if ((importsFastApi || hasFastApiDependency) && !fastApiRoute) {
+    findings.push({
+      id: 'FA003',
+      title: 'FastAPI app has no obvious route decorators',
+      severity: 'warning',
+      category: 'profile',
+      file: importsFastApi?.file,
+      line: importsFastApi?.line,
+      evidence: importsFastApi ? `${importsFastApi.file} imports fastapi` : 'FastAPI dependency metadata exists',
+      expected: 'A FastAPI app should usually define at least one @app.* or @router.* route decorator.',
+      actual: 'No obvious FastAPI route decorator was found.',
+      whyItMatters: 'Generated FastAPI services sometimes create an app object but forget route handlers.',
+      suggestedFix: 'Add route decorators or remove stale FastAPI setup.'
     })
   }
 
@@ -303,31 +318,6 @@ function extractImportMetaEnvRefs(content: string): Array<{ line: number; envNam
   return result
 }
 
-async function extractFrontendApiCalls(context: Parameters<Scanner['scan']>[0]) {
-  const calls: Array<{ path: string; file: string; line: number }> = []
-  for (const file of context.sourceFiles.filter((item) => /\.(ts|tsx|js|jsx)$/.test(item))) {
-    const content = await fs.readFile(path.join(context.rootPath, file), 'utf8')
-    for (const [index, line] of content.split(/\r?\n/).entries()) {
-      const match = /\b(?:fetch|axios(?:\.[a-z]+)?)\(\s*['"]([^'"]*\/api\/[^'"]*)['"]/.exec(line)
-      if (match?.[1]) calls.push({ path: normalizeApiPath(match[1]), file, line: index + 1 })
-    }
-  }
-  return calls
-}
-
-function extractNextApiRoutes(files: string[]): Set<string> {
-  const routes = new Set<string>()
-  for (const file of files) {
-    const appMatch = /^src\/app\/api\/(.+)\/route\.(ts|js)$|^app\/api\/(.+)\/route\.(ts|js)$/.exec(file)
-    const pagesMatch = /^pages\/api\/(.+)\.(ts|js)$|^src\/pages\/api\/(.+)\.(ts|js)$/.exec(file)
-    const appRoute = appMatch?.[1] ?? appMatch?.[3]
-    const pagesRoute = pagesMatch?.[1] ?? pagesMatch?.[3]
-    if (appRoute) routes.add(`/api/${appRoute.replace(/\[(.+?)\]/g, ':$1')}`)
-    if (pagesRoute) routes.add(`/api/${pagesRoute.replace(/\/index$/, '').replace(/\[(.+?)\]/g, ':$1')}`)
-  }
-  return routes
-}
-
 async function sourceContains(context: Parameters<Scanner['scan']>[0], pattern: RegExp) {
   for (const file of context.sourceFiles) {
     const content = await fs.readFile(path.join(context.rootPath, file), 'utf8')
@@ -361,12 +351,4 @@ async function pythonDepsMention(context: Parameters<Scanner['scan']>[0], packag
     if (new RegExp(`\\b${packageName}\\b`, 'i').test(content)) return true
   }
   return false
-}
-
-function normalizeApiPath(value: string): string {
-  try {
-    return new URL(value, 'http://localhost').pathname
-  } catch {
-    return value.split('?')[0] ?? value
-  }
 }

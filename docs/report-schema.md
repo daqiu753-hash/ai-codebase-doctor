@@ -1,11 +1,12 @@
 # Report Schema
 
-The JSON report is intended for tooling and CI experiments. It is stable enough for v0.5 usage, but backward compatibility is not guaranteed until v1.0.
+The JSON report is stable as of v1.0.0. Patch and minor releases should preserve existing fields and compatible meanings. New optional fields may be added in minor releases.
 
 ## Top-level Fields
 
 | Field | Type | Meaning |
 |---|---|---|
+| `schemaVersion` | string | Report schema version. v1.0 reports use `1.0.0`. |
 | `score` | number | Score from `0` to `100`, derived from finding severities. |
 | `summary` | object | Finding counts by severity. |
 | `context` | object | Detected project metadata. |
@@ -62,3 +63,7 @@ The score starts at `100`.
 - `info`: `-1`
 
 The minimum score is `0`.
+
+## Compatibility
+
+v1.x releases should not remove existing top-level fields or finding fields. Any future incompatible schema change should use a new major version.

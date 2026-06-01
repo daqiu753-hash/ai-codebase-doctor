@@ -1,5 +1,9 @@
 # AI Codebase Doctor
 
+[![CI](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/daqiu753-hash/ai-codebase-doctor/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/daqiu753-hash/ai-codebase-doctor)](https://github.com/daqiu753-hash/ai-codebase-doctor/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 AI can generate a repo in minutes.
 
 But can it actually run?
@@ -7,6 +11,8 @@ But can it actually run?
 `ai-codebase-doctor` audits AI-generated codebases for hallucinated dependencies, broken scripts, missing env vars, fake tests, and lying README instructions.
 
 It is not a generic linter. It is a deterministic, read-only reality check for repos that look finished but may not install, configure, test, or start.
+
+The scanner is best-effort and conservative by design: it favors concrete, explainable mismatches over broad static-analysis coverage.
 
 ![Demo terminal output](docs/assets/demo-terminal.svg)
 
@@ -90,7 +96,30 @@ node dist/cli.js . --online
 
 Replace `node dist/cli.js` with `npx ai-codebase-doctor` after the npm package is published.
 
+npm publishing is pending until the release machine is authenticated with npm. Until then, use the local build or install from the GitHub repository.
+
 The scanner reads project files only by default. It does not execute target-project scripts and does not call an LLM API. Network checks only run when `--online` is explicitly passed.
+
+## GitHub Actions
+
+After npm publishing, add a read-only CI check:
+
+```yaml
+- uses: actions/setup-node@v4
+  with:
+    node-version: 20
+- run: npx ai-codebase-doctor . --ci
+```
+
+Before npm publishing, use the local build:
+
+```yaml
+- run: npm ci
+- run: npm run build
+- run: node dist/cli.js . --ci
+```
+
+See [docs/ci.md](docs/ci.md) for `--fail-on` policies and offline/online guidance.
 
 ## Example output
 
@@ -144,7 +173,7 @@ Generated files:
 | `fix-with-claude-code.md` | Repair prompt for Claude Code. |
 | `fix-with-cursor.md` | Repair prompt for Cursor. |
 
-See also [docs/report-schema.md](docs/report-schema.md), [docs/integrations.md](docs/integrations.md), and [docs/demo.md](docs/demo.md).
+See also [docs/report-schema.md](docs/report-schema.md), [docs/ci.md](docs/ci.md), [docs/integrations.md](docs/integrations.md), [docs/demo.md](docs/demo.md), and [docs/field-test-report.md](docs/field-test-report.md).
 
 ## What it checks today
 
@@ -176,6 +205,7 @@ Use those tools too. `ai-codebase-doctor` checks a different layer: whether an A
 
 - Not a replacement for ESLint, TypeScript, tests, security scanners, or dependency audits.
 - Not a full static analyzer.
+- Not a full API contract verifier.
 - Not an automatic repair tool.
 - Not an LLM wrapper.
 - Not a guarantee that the app is production-ready.
@@ -183,6 +213,8 @@ Use those tools too. `ai-codebase-doctor` checks a different layer: whether an A
 ## Known limitations
 
 See [docs/known-limitations.md](docs/known-limitations.md).
+
+For scanner quality and false-positive handling, see [docs/scanner-quality.md](docs/scanner-quality.md) and [docs/false-positive-policy.md](docs/false-positive-policy.md).
 
 ## Roadmap
 
