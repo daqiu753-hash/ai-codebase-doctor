@@ -94,6 +94,27 @@ Replace `node dist/cli.js` with `npx ai-codebase-doctor` after the npm package i
 
 The scanner reads project files only by default. It does not execute target-project scripts and does not call an LLM API. Network checks only run when `--online` is explicitly passed.
 
+## GitHub Actions
+
+After npm publishing, add a read-only CI check:
+
+```yaml
+- uses: actions/setup-node@v4
+  with:
+    node-version: 20
+- run: npx ai-codebase-doctor . --ci
+```
+
+Before npm publishing, use the local build:
+
+```yaml
+- run: npm ci
+- run: npm run build
+- run: node dist/cli.js . --ci
+```
+
+See [docs/ci.md](docs/ci.md) for `--fail-on` policies and offline/online guidance.
+
 ## Example output
 
 ```text

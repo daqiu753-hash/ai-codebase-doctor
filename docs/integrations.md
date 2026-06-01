@@ -2,6 +2,8 @@
 
 ## GitHub Actions
 
+See also [docs/ci.md](ci.md).
+
 After the npm package is published:
 
 ```yaml
@@ -51,3 +53,16 @@ node dist/cli.js . --format json
 ```
 
 Use `--online` only when CI is allowed to reach the npm registry.
+
+## This Repository's CI
+
+The project CI runs:
+
+```bash
+npm ci
+npm run build
+npm test
+npm run doctor:example
+```
+
+The deliberately broken example is scanned for report generation, but it is not run with `--ci` in this repository's own CI because critical findings are expected there.

@@ -69,6 +69,27 @@ npm run doctor:example
 
 scanner 是 best-effort 且偏保守的：优先报告具体、可解释的项目现实不一致，而不是做宽泛静态分析。
 
+## GitHub Actions
+
+发布到 npm 后：
+
+```yaml
+- uses: actions/setup-node@v4
+  with:
+    node-version: 20
+- run: npx ai-codebase-doctor . --ci
+```
+
+npm 发布前可使用本地构建：
+
+```yaml
+- run: npm ci
+- run: npm run build
+- run: node dist/cli.js . --ci
+```
+
+更多 CI 说明见 [docs/ci.md](docs/ci.md)。
+
 ## 示例输出
 
 ```text
