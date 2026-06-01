@@ -58,9 +58,15 @@ Use CI mode to fail a job when critical findings exist:
 node dist/cli.js . --ci
 ```
 
+Opt into npm registry checks:
+
+```bash
+node dist/cli.js . --online
+```
+
 Replace `node dist/cli.js` with `npx ai-codebase-doctor` after the npm package is published.
 
-The scanner reads project files only. It does not execute target-project scripts and does not call an LLM API.
+The scanner reads project files only by default. It does not execute target-project scripts and does not call an LLM API. Network checks only run when `--online` is explicitly passed.
 
 ## Example output
 
@@ -125,6 +131,8 @@ Generated files:
 | `D001` | Dependencies | critical | JS/TS source imports a package not declared in `package.json`. |
 | `T001` | Tests | warning | A test file has no obvious assertion. |
 
+Runtime checks also cover package manager mismatches, Node/Docker version drift, Docker command reality, Prisma/Drizzle setup claims, and opt-in npm registry existence checks. See [docs/checks.md](docs/checks.md).
+
 ## Why not just use ESLint/Semgrep/Gitleaks/Knip?
 
 Use those tools too. `ai-codebase-doctor` checks a different layer: whether an AI-generated repository is internally honest about how to run.
@@ -150,6 +158,7 @@ Use those tools too. `ai-codebase-doctor` checks a different layer: whether an A
 - Env var detection focuses on direct static references such as `process.env.NAME`, `import.meta.env.NAME`, and `os.getenv("NAME")`.
 - README command checks focus on package script commands, not every shell command a README can mention.
 - Line numbers are best-effort and may point to the first matching line when a value appears more than once.
+- Runtime checks are best-effort and intentionally conservative to avoid turning the project into a generic linter.
 - v0.1 focuses on Node.js / JS / TS reality checks with limited Python env-var support.
 
 ## Roadmap

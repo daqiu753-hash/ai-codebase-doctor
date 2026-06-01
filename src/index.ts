@@ -1,10 +1,10 @@
 import { detectProject } from './context.js'
 import { scanners } from './scanners/index.js'
 import { scoreFindings, summarizeFindings } from './scoring.js'
-import type { DoctorReport, Finding } from './types.js'
+import type { DoctorReport, Finding, RunDoctorOptions } from './types.js'
 
-export async function runDoctor(rootPath: string): Promise<DoctorReport> {
-  const context = await detectProject(rootPath)
+export async function runDoctor(rootPath: string, options: RunDoctorOptions = {}): Promise<DoctorReport> {
+  const context = await detectProject(rootPath, options)
   const findings: Finding[] = []
 
   for (const scanner of scanners) {

@@ -16,6 +16,8 @@ export function renderMarkdownReport(report: DoctorReport): string {
   lines.push('## Detected Project')
   lines.push('')
   lines.push(`- Framework: ${report.context.framework}`)
+  lines.push(`- Detected profile: ${report.context.detectedProfile}`)
+  lines.push(`- Selected profile: ${report.context.selectedProfile}`)
   lines.push(`- Package manager: ${report.context.packageManager}`)
   lines.push(`- README: ${report.context.readmePath ?? 'not found'}`)
   lines.push(`- Package file: ${report.context.packageJsonPath ?? 'not found'}`)

@@ -34,6 +34,8 @@ export const dependencyScanner: Scanner = {
       ...Object.keys(context.packageJson.optionalDependencies ?? {})
     ])
 
+    const undeclaredPackages = new Map<string, { rawImport: string; file: string; line: number }>()
+
     for (const file of context.sourceFiles.filter((f) => /\.(ts|tsx|js|jsx|mjs|cjs)$/.test(f))) {
       const content = await fs.readFile(path.join(context.rootPath, file), 'utf8')
       for (const imported of extractImports(content)) {
@@ -41,6 +43,9 @@ export const dependencyScanner: Scanner = {
         if (!packageName) continue
         if (NODE_BUILTINS.has(packageName)) continue
         if (declared.has(packageName)) continue
+        if (!undeclaredPackages.has(packageName)) {
+          undeclaredPackages.set(packageName, { rawImport: imported.value, file, line: imported.line })
+        }
 
         findings.push({
           id: 'D001',
@@ -56,6 +61,41 @@ export const dependencyScanner: Scanner = {
           suggestedFix: `Install and declare ${packageName}, replace the import, or remove unused code.`,
           agentPrompt: `Fix missing dependency declaration for \`${packageName}\` imported by \`${file}\`. Verify whether the package exists and is the intended dependency.`
         })
+      }
+    }
+
+    if (context.options.online) {
+      for (const [packageName, imported] of undeclaredPackages.entries()) {
+        const registryResult = await checkNpmPackage(packageName)
+        if (registryResult === 'missing') {
+          findings.push({
+            id: 'D004',
+            title: 'Imported npm package was not found in the registry',
+            severity: 'warning',
+            category: 'dependencies',
+            file: imported.file,
+            line: imported.line,
+            evidence: `${imported.file} imports ${imported.rawImport}`,
+            expected: `${packageName} should exist in the npm registry or be replaced with a real package.`,
+            actual: `${packageName} was not found in the npm registry.`,
+            whyItMatters: 'AI-generated code sometimes imports hallucinated npm packages. Online checks are opt-in because they use the network.',
+            suggestedFix: `Replace ${packageName} with the intended package or remove the stale import.`
+          })
+        } else if (registryResult === 'failed') {
+          findings.push({
+            id: 'D005',
+            title: 'npm registry check failed',
+            severity: 'info',
+            category: 'dependencies',
+            file: imported.file,
+            line: imported.line,
+            evidence: `Could not verify ${packageName} in the npm registry`,
+            expected: 'Registry checks should complete when --online is used and the network is available.',
+            actual: 'The registry request failed or timed out.',
+            whyItMatters: 'Online checks should never make the default deterministic scan flaky.',
+            suggestedFix: 'Retry with --online when network access is available, or verify the package manually.'
+          })
+        }
       }
     }
 
@@ -99,4 +139,21 @@ function normalizePackageName(importPath: string): string | undefined {
     return scope && name ? `${scope}/${name}` : importPath
   }
   return importPath.split('/')[0]
+}
+
+async function checkNpmPackage(packageName: string): Promise<'found' | 'missing' | 'failed'> {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 3000)
+  try {
+    const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(packageName)}`, {
+      signal: controller.signal
+    })
+    if (response.status === 404) return 'missing'
+    if (!response.ok) return 'failed'
+    return 'found'
+  } catch {
+    return 'failed'
+  } finally {
+    clearTimeout(timeout)
+  }
 }

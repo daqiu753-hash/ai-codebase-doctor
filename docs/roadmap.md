@@ -14,7 +14,11 @@
 
 ## v0.2: Stronger AI-generated repo checks
 
+- package manager mismatch checker
+- Node runtime checker
 - Dockerfile consistency checker
+- database setup checker
+- opt-in npm registry checker
 - secret-lite checker
 - frontend/backend API path scanner
 - better line-number detection

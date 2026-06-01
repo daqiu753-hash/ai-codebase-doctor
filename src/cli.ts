@@ -17,8 +17,17 @@ program
   .option('--json', 'Print JSON report to stdout')
   .option('--no-files', 'Do not write report files')
   .option('--ci', 'Exit with a non-zero status when critical findings are present')
-  .action(async (targetPath: string, options: { out: string; json?: boolean; files: boolean; ci?: boolean }) => {
-    const report = await runDoctor(targetPath)
+  .option('--online', 'Opt in to network-backed registry checks')
+  .option('--profile <profile>', 'Project profile to use: auto, nextjs, vite, express, fastapi', 'auto')
+  .action(
+    async (
+      targetPath: string,
+      options: { out: string; json?: boolean; files: boolean; ci?: boolean; online?: boolean; profile: string }
+    ) => {
+    const report = await runDoctor(targetPath, {
+      online: options.online,
+      profile: normalizeProfile(options.profile)
+    })
 
     if (options.json) {
       console.log(JSON.stringify(report, null, 2))
@@ -40,9 +49,15 @@ program
     if (options.ci && report.summary.critical > 0) {
       process.exitCode = 1
     }
-  })
+  }
+  )
 
 program.parseAsync(process.argv).catch((error: unknown) => {
   console.error(error instanceof Error ? error.message : error)
   process.exit(1)
 })
+
+function normalizeProfile(profile: string) {
+  if (['auto', 'nextjs', 'vite', 'express', 'fastapi'].includes(profile)) return profile as never
+  throw new Error(`Unsupported profile "${profile}". Use auto, nextjs, vite, express, or fastapi.`)
+}

@@ -34,6 +34,12 @@ CI 模式会在存在 `critical` findings 时返回非 `0`：
 node dist/cli.js . --ci
 ```
 
+显式开启 npm registry 检查：
+
+```bash
+node dist/cli.js . --online
+```
+
 本仓库本地 demo：
 
 ```bash
@@ -42,7 +48,7 @@ npm run build
 npm run doctor:example
 ```
 
-扫描过程只读取文件，不执行目标项目里的 scripts，也不调用 LLM API。
+默认扫描过程只读取文件，不执行目标项目里的 scripts，也不调用 LLM API。只有显式传入 `--online` 时才会访问 npm registry。
 
 ## 示例输出
 
@@ -90,6 +96,8 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 | `D001` | Dependencies | JS/TS 源码 import 了未声明的包。 |
 | `T001` | Tests | 测试文件没有明显断言。 |
 
+runtime checks 还覆盖 package manager mismatch、Node/Docker 版本漂移、Docker command、Prisma/Drizzle setup 和 opt-in npm registry 检查。详见 [docs/checks.md](docs/checks.md)。
+
 ## 它不是什么
 
 它不是 ESLint、Semgrep、Gitleaks 或 Knip 的替代品。那些工具分别擅长代码规则、安全模式、secret 检测和未使用代码清理；`ai-codebase-doctor` 专注检查 AI 生成项目是否真的能安装、配置、测试和启动。
@@ -100,6 +108,7 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 
 - import / README / env 检测保持轻量，复杂多行写法可能漏报。
 - 行号是 best-effort，重复出现时可能指向第一个匹配位置。
+- runtime checks 是 best-effort，刻意保持保守，避免变成 generic linter。
 - v0.1 主要面向 Node.js / JS / TS，Python 只覆盖环境变量基础场景。
 
 ## Roadmap

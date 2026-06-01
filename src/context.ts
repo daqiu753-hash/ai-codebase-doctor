@@ -1,11 +1,11 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import fg from 'fast-glob'
-import type { PackageJson, ProjectContext } from './types.js'
+import type { PackageJson, ProjectContext, ProjectProfile, RunDoctorOptions } from './types.js'
 
 const SOURCE_EXTENSIONS = ['ts', 'tsx', 'js', 'jsx', 'mjs', 'cjs', 'py']
 
-export async function detectProject(rootPath: string): Promise<ProjectContext> {
+export async function detectProject(rootPath: string, options: RunDoctorOptions = {}): Promise<ProjectContext> {
   const absoluteRoot = path.resolve(rootPath)
   const files = await fg(['**/*'], {
     cwd: absoluteRoot,
@@ -39,6 +39,9 @@ export async function detectProject(rootPath: string): Promise<ProjectContext> {
 
   const testFiles = files.filter(isTestFile)
 
+  const framework = detectFramework(files, packageJson)
+  const detectedProfile = detectProfile(files, packageJson, framework)
+
   return {
     rootPath: absoluteRoot,
     files,
@@ -51,7 +54,13 @@ export async function detectProject(rootPath: string): Promise<ProjectContext> {
     envExampleText,
     sourceFiles,
     testFiles,
-    framework: detectFramework(files, packageJson),
+    framework,
+    detectedProfile,
+    selectedProfile: options.profile && options.profile !== 'auto' ? options.profile : detectedProfile,
+    options: {
+      online: options.online ?? false,
+      profile: options.profile ?? 'auto'
+    },
     packageManager: detectPackageManager(files)
   }
 }
@@ -86,6 +95,31 @@ function detectFramework(files: string[], packageJson?: PackageJson): ProjectCon
   if (deps.vite || files.includes('vite.config.ts') || files.includes('vite.config.js')) return 'vite'
   if (files.includes('requirements.txt') || files.includes('pyproject.toml')) return 'python'
   if (files.includes('package.json')) return 'node'
+  return 'unknown'
+}
+
+function detectProfile(
+  files: string[],
+  packageJson: PackageJson | undefined,
+  framework: ProjectContext['framework']
+): ProjectProfile {
+  const deps = {
+    ...packageJson?.dependencies,
+    ...packageJson?.devDependencies
+  }
+  if (framework === 'nextjs') return 'nextjs'
+  if (framework === 'vite') return 'vite'
+  if (deps.express || files.some((file) => /(^|\/)(server|app)\.(ts|js|mjs|cjs)$/.test(file))) return 'express'
+  if (
+    deps.fastapi ||
+    files.includes('requirements.txt') ||
+    files.includes('pyproject.toml') ||
+    files.some((file) => file.endsWith('.py'))
+  ) {
+    return 'fastapi'
+  }
+  if (framework === 'python') return 'python'
+  if (framework === 'node') return 'node'
   return 'unknown'
 }
 
