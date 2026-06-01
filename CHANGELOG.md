@@ -2,7 +2,7 @@
 
 ## v0.5.0
 
-Planned developer workflow release.
+Developer workflow release.
 
 - Runtime reality checks.
 - Framework profiles for Next.js, Vite, Express, and FastAPI.
@@ -13,7 +13,7 @@ Planned developer workflow release.
 - GitHub Actions / CI documentation.
 - Demo documentation.
 
-npm publishing is pending until the v0.5.0 release process completes.
+npm publishing is pending until npm auth and package ownership are confirmed.
 
 ## v0.1.0
 
