@@ -2,7 +2,7 @@
 
 ## v1.0.0
 
-Stable public release candidate.
+Stable public release.
 
 - Stable CLI options: `--ci`, `--fail-on`, `--format`, `--profile`, and `--online`.
 - Stable JSON report schema with `schemaVersion`.
@@ -12,6 +12,8 @@ Stable public release candidate.
 - Realistic fixtures and field test records.
 - False-positive policy and scanner quality documentation.
 - Public contribution, security, issue, and pull request templates.
+
+npm publishing remains pending until npm authentication is completed on the release machine.
 
 ## v0.5.0
 

@@ -96,6 +96,8 @@ node dist/cli.js . --online
 
 Replace `node dist/cli.js` with `npx ai-codebase-doctor` after the npm package is published.
 
+npm publishing is pending until the release machine is authenticated with npm. Until then, use the local build or install from the GitHub repository.
+
 The scanner reads project files only by default. It does not execute target-project scripts and does not call an LLM API. Network checks only run when `--online` is explicitly passed.
 
 ## GitHub Actions

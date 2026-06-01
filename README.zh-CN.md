@@ -71,6 +71,8 @@ npm run doctor:example
 
 默认扫描过程只读取文件，不执行目标项目里的 scripts，也不调用 LLM API。只有显式传入 `--online` 时才会访问 npm registry。
 
+npm 发布仍等待 release machine 完成 npm 登录认证；在此之前请使用本地构建或从 GitHub 仓库安装。
+
 scanner 是 best-effort 且偏保守的：优先报告具体、可解释的项目现实不一致，而不是做宽泛静态分析。
 
 ## GitHub Actions

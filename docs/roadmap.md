@@ -35,7 +35,17 @@
 ## v1.0: Stable public release
 
 - stable JSON schema
-- plugin scanner interface
-- GitHub Action release
-- project health badge
-- npm package release
+- stable CLI options
+- GitHub Action / CI docs
+- realistic fixtures and field test records
+- framework profiles for Next.js, Vite, Express, and FastAPI
+- npm publish readiness
+
+## After v1.0
+
+- npm publishing after maintainer auth is completed
+- richer fixture corpus from public AI-generated repos
+- optional plugin scanner interface
+- deeper Docker and database setup checks
+- report schema compatibility tests
+- lower-noise API path detection for larger repos
