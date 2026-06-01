@@ -56,25 +56,6 @@ async function scanNextProfile(context: Parameters<Scanner['scan']>[0]): Promise
     })
   }
 
-  const routes = extractNextApiRoutes(context.files)
-  const frontendApiCalls = await extractFrontendApiCalls(context)
-  if (frontendApiCalls.length > 0 && routes.size === 0) {
-    const first = frontendApiCalls[0]
-    findings.push({
-      id: 'NX001',
-      title: 'Frontend API calls have no obvious Next.js API routes',
-      severity: 'warning',
-      category: 'profile',
-      file: first?.file,
-      line: first?.line,
-      evidence: `${first?.file} calls ${first?.path}`,
-      expected: 'A matching app/api or pages/api route should exist.',
-      actual: 'No Next.js API route files were found.',
-      whyItMatters: 'AI-generated frontend pages often call API routes that were never created.',
-      suggestedFix: 'Create the matching route file or update the frontend API call.'
-    })
-  }
-
   for (const issue of await findClientEnvPrefixIssues(context, 'NEXT_PUBLIC_')) {
     findings.push({
       id: 'NX002',
@@ -303,31 +284,6 @@ function extractImportMetaEnvRefs(content: string): Array<{ line: number; envNam
   return result
 }
 
-async function extractFrontendApiCalls(context: Parameters<Scanner['scan']>[0]) {
-  const calls: Array<{ path: string; file: string; line: number }> = []
-  for (const file of context.sourceFiles.filter((item) => /\.(ts|tsx|js|jsx)$/.test(item))) {
-    const content = await fs.readFile(path.join(context.rootPath, file), 'utf8')
-    for (const [index, line] of content.split(/\r?\n/).entries()) {
-      const match = /\b(?:fetch|axios(?:\.[a-z]+)?)\(\s*['"]([^'"]*\/api\/[^'"]*)['"]/.exec(line)
-      if (match?.[1]) calls.push({ path: normalizeApiPath(match[1]), file, line: index + 1 })
-    }
-  }
-  return calls
-}
-
-function extractNextApiRoutes(files: string[]): Set<string> {
-  const routes = new Set<string>()
-  for (const file of files) {
-    const appMatch = /^src\/app\/api\/(.+)\/route\.(ts|js)$|^app\/api\/(.+)\/route\.(ts|js)$/.exec(file)
-    const pagesMatch = /^pages\/api\/(.+)\.(ts|js)$|^src\/pages\/api\/(.+)\.(ts|js)$/.exec(file)
-    const appRoute = appMatch?.[1] ?? appMatch?.[3]
-    const pagesRoute = pagesMatch?.[1] ?? pagesMatch?.[3]
-    if (appRoute) routes.add(`/api/${appRoute.replace(/\[(.+?)\]/g, ':$1')}`)
-    if (pagesRoute) routes.add(`/api/${pagesRoute.replace(/\/index$/, '').replace(/\[(.+?)\]/g, ':$1')}`)
-  }
-  return routes
-}
-
 async function sourceContains(context: Parameters<Scanner['scan']>[0], pattern: RegExp) {
   for (const file of context.sourceFiles) {
     const content = await fs.readFile(path.join(context.rootPath, file), 'utf8')
@@ -361,12 +317,4 @@ async function pythonDepsMention(context: Parameters<Scanner['scan']>[0], packag
     if (new RegExp(`\\b${packageName}\\b`, 'i').test(content)) return true
   }
   return false
-}
-
-function normalizeApiPath(value: string): string {
-  try {
-    return new URL(value, 'http://localhost').pathname
-  } catch {
-    return value.split('?')[0] ?? value
-  }
 }

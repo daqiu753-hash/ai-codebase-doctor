@@ -26,7 +26,6 @@ describe('framework profile scanners', () => {
 
     const ids = report.findings.map((finding) => finding.id)
     expect(ids).toContain('NX003')
-    expect(ids).toContain('NX001')
     expect(ids).toContain('NX002')
     expect(ids).toContain('A001')
   })

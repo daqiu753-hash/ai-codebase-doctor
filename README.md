@@ -8,6 +8,8 @@ But can it actually run?
 
 It is not a generic linter. It is a deterministic, read-only reality check for repos that look finished but may not install, configure, test, or start.
 
+The scanner is best-effort and conservative by design: it favors concrete, explainable mismatches over broad static-analysis coverage.
+
 ![Demo terminal output](docs/assets/demo-terminal.svg)
 
 ## Installation
@@ -144,7 +146,7 @@ Generated files:
 | `fix-with-claude-code.md` | Repair prompt for Claude Code. |
 | `fix-with-cursor.md` | Repair prompt for Cursor. |
 
-See also [docs/report-schema.md](docs/report-schema.md), [docs/integrations.md](docs/integrations.md), and [docs/demo.md](docs/demo.md).
+See also [docs/report-schema.md](docs/report-schema.md), [docs/integrations.md](docs/integrations.md), [docs/demo.md](docs/demo.md), and [docs/field-test-report.md](docs/field-test-report.md).
 
 ## What it checks today
 
@@ -183,6 +185,8 @@ Use those tools too. `ai-codebase-doctor` checks a different layer: whether an A
 ## Known limitations
 
 See [docs/known-limitations.md](docs/known-limitations.md).
+
+For scanner quality and false-positive handling, see [docs/scanner-quality.md](docs/scanner-quality.md) and [docs/false-positive-policy.md](docs/false-positive-policy.md).
 
 ## Roadmap
 

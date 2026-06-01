@@ -67,6 +67,8 @@ npm run doctor:example
 
 默认扫描过程只读取文件，不执行目标项目里的 scripts，也不调用 LLM API。只有显式传入 `--online` 时才会访问 npm registry。
 
+scanner 是 best-effort 且偏保守的：优先报告具体、可解释的项目现实不一致，而不是做宽泛静态分析。
+
 ## 示例输出
 
 ```text
@@ -102,7 +104,7 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 - `fix-with-claude-code.md`
 - `fix-with-cursor.md`
 
-更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)。
+更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)、[docs/field-test-report.md](docs/field-test-report.md)。
 
 ## 当前检查项
 
@@ -128,6 +130,8 @@ framework profiles 提供 Next.js、Vite、Express、FastAPI 的 best-effort 检
 ## 已知限制
 
 见 [docs/known-limitations.md](docs/known-limitations.md)。
+
+误报治理与 scanner 质量标准见 [docs/false-positive-policy.md](docs/false-positive-policy.md)、[docs/scanner-quality.md](docs/scanner-quality.md)。
 
 ## Roadmap
 
