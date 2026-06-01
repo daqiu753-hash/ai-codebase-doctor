@@ -1,0 +1,36 @@
+# Roadmap
+
+## v0.1: Reality Check MVP
+
+- README command checker
+- package script checker
+- env var checker
+- dependency declaration checker
+- fake test checker
+- Markdown / JSON / console reports
+- agent fix prompts
+- example broken AI SaaS
+
+## v0.2: Stronger AI-generated repo checks
+
+- Dockerfile consistency checker
+- secret-lite checker
+- frontend/backend API path scanner
+- `--ci` mode
+- better line-number detection
+- scanner unit tests
+
+## v0.3: Framework profiles
+
+- Next.js profile
+- Vite + Express profile
+- FastAPI profile
+- GitHub Action
+
+## v1.0: Stable public release
+
+- stable JSON schema
+- plugin scanner interface
+- GitHub Action release
+- project health badge
+- npm package release

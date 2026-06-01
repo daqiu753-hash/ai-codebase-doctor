@@ -1,0 +1,21 @@
+{
+  "name": "ai-generated-fake-saas",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.4",
+    "tsx": "^4.16.2"
+  }
+}
