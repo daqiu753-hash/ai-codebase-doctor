@@ -8,6 +8,8 @@ But can it actually run?
 
 It is not a generic linter. It is a deterministic, read-only reality check for repos that look finished but may not install, configure, test, or start.
 
+![Demo terminal output](docs/assets/demo-terminal.svg)
+
 ## Installation
 
 Local usage before the first npm release:
@@ -58,9 +60,37 @@ Use CI mode to fail a job when critical findings exist:
 node dist/cli.js . --ci
 ```
 
+Choose report output:
+
+```bash
+node dist/cli.js . --format all
+node dist/cli.js . --format json
+```
+
+Choose failure policy:
+
+```bash
+node dist/cli.js . --fail-on critical
+node dist/cli.js . --fail-on warning
+node dist/cli.js . --fail-on none
+```
+
+Select a framework profile:
+
+```bash
+node dist/cli.js . --profile auto
+node dist/cli.js . --profile nextjs
+```
+
+Opt into npm registry checks:
+
+```bash
+node dist/cli.js . --online
+```
+
 Replace `node dist/cli.js` with `npx ai-codebase-doctor` after the npm package is published.
 
-The scanner reads project files only. It does not execute target-project scripts and does not call an LLM API.
+The scanner reads project files only by default. It does not execute target-project scripts and does not call an LLM API. Network checks only run when `--online` is explicitly passed.
 
 ## Example output
 
@@ -114,6 +144,8 @@ Generated files:
 | `fix-with-claude-code.md` | Repair prompt for Claude Code. |
 | `fix-with-cursor.md` | Repair prompt for Cursor. |
 
+See also [docs/report-schema.md](docs/report-schema.md), [docs/integrations.md](docs/integrations.md), and [docs/demo.md](docs/demo.md).
+
 ## What it checks today
 
 | ID | Area | Severity | Check |
@@ -124,6 +156,10 @@ Generated files:
 | `E002` | Env | info | `.env.example` documents an env var that source code does not use. |
 | `D001` | Dependencies | critical | JS/TS source imports a package not declared in `package.json`. |
 | `T001` | Tests | warning | A test file has no obvious assertion. |
+
+Runtime checks also cover package manager mismatches, Node/Docker version drift, Docker command reality, Prisma/Drizzle setup claims, and opt-in npm registry existence checks. See [docs/checks.md](docs/checks.md).
+
+Framework profiles add best-effort checks for Next.js, Vite, Express, and FastAPI. See [docs/profiles.md](docs/profiles.md).
 
 ## Why not just use ESLint/Semgrep/Gitleaks/Knip?
 
@@ -146,11 +182,7 @@ Use those tools too. `ai-codebase-doctor` checks a different layer: whether an A
 
 ## Known limitations
 
-- Import detection is regex-based and intentionally lightweight; unusual multi-line imports may be missed.
-- Env var detection focuses on direct static references such as `process.env.NAME`, `import.meta.env.NAME`, and `os.getenv("NAME")`.
-- README command checks focus on package script commands, not every shell command a README can mention.
-- Line numbers are best-effort and may point to the first matching line when a value appears more than once.
-- v0.1 focuses on Node.js / JS / TS reality checks with limited Python env-var support.
+See [docs/known-limitations.md](docs/known-limitations.md).
 
 ## Roadmap
 

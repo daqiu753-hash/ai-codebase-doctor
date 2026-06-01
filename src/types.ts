@@ -7,6 +7,12 @@ export type FindingCategory =
   | 'env'
   | 'tests'
   | 'config'
+  | 'package-manager'
+  | 'runtime'
+  | 'docker'
+  | 'database'
+  | 'api'
+  | 'profile'
 
 export type Finding = {
   id: string
@@ -30,6 +36,14 @@ export type PackageJson = {
   peerDependencies?: Record<string, string>
   optionalDependencies?: Record<string, string>
   engines?: Record<string, string>
+  packageManager?: string
+}
+
+export type ProjectProfile = 'auto' | 'nextjs' | 'vite' | 'express' | 'fastapi' | 'node' | 'python' | 'unknown'
+
+export type RunDoctorOptions = {
+  online?: boolean
+  profile?: ProjectProfile
 }
 
 export type ProjectContext = {
@@ -45,6 +59,9 @@ export type ProjectContext = {
   sourceFiles: string[]
   testFiles: string[]
   framework: 'nextjs' | 'vite' | 'node' | 'python' | 'unknown'
+  detectedProfile: ProjectProfile
+  selectedProfile: ProjectProfile
+  options: RunDoctorOptions
   packageManager: 'npm' | 'pnpm' | 'yarn' | 'bun' | 'unknown'
 }
 

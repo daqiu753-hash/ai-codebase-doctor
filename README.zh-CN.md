@@ -6,6 +6,8 @@ AI 可以在几分钟内生成一个 repo。
 
 `ai-codebase-doctor` 是一个面向 AI 生成代码库的只读、确定性 CLI 检查工具。它检查的不是代码风格，而是项目是否真的自洽：依赖是否幻觉、脚本是否损坏、环境变量是否缺文档、测试是否只是空壳、README 里的运行说明是否在说谎。
 
+![Demo terminal output](docs/assets/demo-terminal.svg)
+
 ## 安装与使用
 
 首次 npm 发布前，本地使用：
@@ -34,6 +36,27 @@ CI 模式会在存在 `critical` findings 时返回非 `0`：
 node dist/cli.js . --ci
 ```
 
+选择输出格式和失败策略：
+
+```bash
+node dist/cli.js . --format all
+node dist/cli.js . --fail-on warning
+node dist/cli.js . --fail-on none
+```
+
+选择 framework profile：
+
+```bash
+node dist/cli.js . --profile auto
+node dist/cli.js . --profile nextjs
+```
+
+显式开启 npm registry 检查：
+
+```bash
+node dist/cli.js . --online
+```
+
 本仓库本地 demo：
 
 ```bash
@@ -42,7 +65,7 @@ npm run build
 npm run doctor:example
 ```
 
-扫描过程只读取文件，不执行目标项目里的 scripts，也不调用 LLM API。
+默认扫描过程只读取文件，不执行目标项目里的 scripts，也不调用 LLM API。只有显式传入 `--online` 时才会访问 npm registry。
 
 ## 示例输出
 
@@ -79,6 +102,8 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 - `fix-with-claude-code.md`
 - `fix-with-cursor.md`
 
+更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)。
+
 ## 当前检查项
 
 | ID | 领域 | 含义 |
@@ -90,6 +115,10 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 | `D001` | Dependencies | JS/TS 源码 import 了未声明的包。 |
 | `T001` | Tests | 测试文件没有明显断言。 |
 
+runtime checks 还覆盖 package manager mismatch、Node/Docker 版本漂移、Docker command、Prisma/Drizzle setup 和 opt-in npm registry 检查。详见 [docs/checks.md](docs/checks.md)。
+
+framework profiles 提供 Next.js、Vite、Express、FastAPI 的 best-effort 检查。详见 [docs/profiles.md](docs/profiles.md)。
+
 ## 它不是什么
 
 它不是 ESLint、Semgrep、Gitleaks 或 Knip 的替代品。那些工具分别擅长代码规则、安全模式、secret 检测和未使用代码清理；`ai-codebase-doctor` 专注检查 AI 生成项目是否真的能安装、配置、测试和启动。
@@ -98,9 +127,7 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 
 ## 已知限制
 
-- import / README / env 检测保持轻量，复杂多行写法可能漏报。
-- 行号是 best-effort，重复出现时可能指向第一个匹配位置。
-- v0.1 主要面向 Node.js / JS / TS，Python 只覆盖环境变量基础场景。
+见 [docs/known-limitations.md](docs/known-limitations.md)。
 
 ## Roadmap
 

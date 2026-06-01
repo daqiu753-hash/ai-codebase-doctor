@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-label="AI Codebase Doctor demo output">
+  <rect width="960" height="520" rx="10" fill="#101418"/>
+  <rect x="0" y="0" width="960" height="44" rx="10" fill="#1f2933"/>
+  <circle cx="24" cy="22" r="6" fill="#ef4444"/>
+  <circle cx="46" cy="22" r="6" fill="#f59e0b"/>
+  <circle cx="68" cy="22" r="6" fill="#22c55e"/>
+  <text x="28" y="82" fill="#e5e7eb" font-family="Menlo, Consolas, monospace" font-size="20">AI Codebase Doctor</text>
+  <text x="28" y="124" fill="#f87171" font-family="Menlo, Consolas, monospace" font-size="18">Score: 0/100   Critical: 8   Warnings: 5   Info: 3</text>
+  <text x="28" y="168" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[D001] Imported package not declared</text>
+  <text x="28" y="198" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/lib/ai.ts imports @ai-sdk/openai</text>
+  <text x="28" y="238" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[E001] Environment variable used but not documented</text>
+  <text x="28" y="268" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/lib/db.ts uses DATABASE_URL</text>
+  <text x="28" y="308" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="16">[A001] Frontend API route has no obvious backend route</text>
+  <text x="28" y="338" fill="#d1d5db" font-family="Menlo, Consolas, monospace" font-size="15">src/app/page.tsx calls /api/customers</text>
+  <text x="28" y="388" fill="#a7f3d0" font-family="Menlo, Consolas, monospace" font-size="15">Reports generated in ./reports</text>
+  <text x="28" y="430" fill="#9ca3af" font-family="Menlo, Consolas, monospace" font-size="14">Deterministic. Read-only by default. Built for AI-generated repo reality checks.</text>
+</svg>

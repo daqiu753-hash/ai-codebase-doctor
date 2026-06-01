@@ -1,6 +1,6 @@
 {
   "name": "ai-codebase-doctor",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "A CLI that audits AI-generated codebases and tells you why they won't run.",
   "type": "module",
   "bin": {
@@ -17,8 +17,8 @@
     "build": "tsc -p tsconfig.json",
     "prepack": "npm run build",
     "start": "node dist/cli.js",
-    "test": "vitest run tests/scanners.test.ts",
-    "test:watch": "vitest tests/scanners.test.ts",
+    "test": "vitest run tests/*.test.ts",
+    "test:watch": "vitest tests/*.test.ts",
     "typecheck": "tsc --noEmit",
     "doctor:example": "tsx src/cli.ts examples/ai-generated-fake-saas --out reports"
   },

@@ -11,6 +11,8 @@ export function renderConsoleReport(report: DoctorReport): string {
   lines.push('')
   lines.push('Detected:')
   lines.push(`- Framework: ${report.context.framework}`)
+  lines.push(`- Detected profile: ${report.context.detectedProfile}`)
+  lines.push(`- Selected profile: ${report.context.selectedProfile}`)
   lines.push(`- Package manager: ${report.context.packageManager}`)
   lines.push(`- Source files: ${report.context.sourceFiles.length}`)
   lines.push(`- Test files: ${report.context.testFiles.length}`)
