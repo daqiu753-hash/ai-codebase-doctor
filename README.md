@@ -10,7 +10,15 @@ It is not a generic linter. It is a deterministic, read-only reality check for r
 
 ## Installation
 
-Run it directly with `npx`:
+Local usage before the first npm release:
+
+```bash
+npm install
+npm run build
+node dist/cli.js .
+```
+
+After the package is published to npm, run it directly with `npx`:
 
 ```bash
 npx ai-codebase-doctor .
@@ -29,26 +37,28 @@ npm run doctor:example
 Scan the current project:
 
 ```bash
-npx ai-codebase-doctor .
+node dist/cli.js .
 ```
 
 Write reports to a custom directory:
 
 ```bash
-npx ai-codebase-doctor ./path/to/project --out reports
+node dist/cli.js ./path/to/project --out reports
 ```
 
 Print JSON to stdout:
 
 ```bash
-npx ai-codebase-doctor . --json --no-files
+node dist/cli.js . --json --no-files
 ```
 
 Use CI mode to fail a job when critical findings exist:
 
 ```bash
-npx ai-codebase-doctor . --ci
+node dist/cli.js . --ci
 ```
+
+Replace `node dist/cli.js` with `npx ai-codebase-doctor` after the npm package is published.
 
 The scanner reads project files only. It does not execute target-project scripts and does not call an LLM API.
 
@@ -151,7 +161,6 @@ Near-term focus:
 - stronger Dockerfile and config consistency checks
 - secret-lite checks without becoming a secret scanner
 - frontend/backend API path mismatch detection
-- `--ci` mode
 - better line-number evidence
 
 ## Philosophy

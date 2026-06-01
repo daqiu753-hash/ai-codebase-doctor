@@ -9,6 +9,7 @@
 - fake test checker
 - Markdown / JSON / console reports
 - agent fix prompts
+- `--ci` mode
 - example broken AI SaaS
 
 ## v0.2: Stronger AI-generated repo checks
@@ -16,7 +17,6 @@
 - Dockerfile consistency checker
 - secret-lite checker
 - frontend/backend API path scanner
-- `--ci` mode
 - better line-number detection
 - more scanner fixtures
 

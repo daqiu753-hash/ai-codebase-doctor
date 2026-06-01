@@ -8,6 +8,16 @@ AI 可以在几分钟内生成一个 repo。
 
 ## 安装与使用
 
+首次 npm 发布前，本地使用：
+
+```bash
+npm install
+npm run build
+node dist/cli.js .
+```
+
+发布到 npm 后可使用：
+
 ```bash
 npx ai-codebase-doctor .
 ```
@@ -15,13 +25,13 @@ npx ai-codebase-doctor .
 扫描指定项目并输出报告：
 
 ```bash
-npx ai-codebase-doctor ./path/to/project --out reports
+node dist/cli.js ./path/to/project --out reports
 ```
 
 CI 模式会在存在 `critical` findings 时返回非 `0`：
 
 ```bash
-npx ai-codebase-doctor . --ci
+node dist/cli.js . --ci
 ```
 
 本仓库本地 demo：
