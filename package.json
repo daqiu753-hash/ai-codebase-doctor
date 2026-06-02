@@ -19,7 +19,8 @@
     "docs/known-limitations.md",
     "docs/profiles.md",
     "docs/report-schema.md",
-    "docs/report-schema.json"
+    "docs/report-schema.json",
+    "docs/validation"
   ],
   "scripts": {
     "dev": "tsx src/cli.ts",
@@ -29,7 +30,8 @@
     "test": "vitest run tests/*.test.ts",
     "test:watch": "vitest tests/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "doctor:example": "tsx src/cli.ts examples/ai-generated-fake-saas --out reports"
+    "doctor:example": "tsx src/cli.ts examples/ai-generated-fake-saas --out reports",
+    "validation:synthetic": "node scripts/run-synthetic-validation.mjs"
   },
   "keywords": [
     "ai",

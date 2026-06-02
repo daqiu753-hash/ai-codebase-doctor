@@ -1,0 +1,15 @@
+{
+  "name": "synthetic-express-api-route-mismatch",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.8"
+  }
+}
+

@@ -26,7 +26,7 @@ npx ai-codebase-doctor examples/ai-generated-fake-saas --out reports
 
 ```text
 Score: 0/100
-Critical: 8
+Critical: 7
 Warnings: 4
 Info: 3
 
@@ -143,6 +143,16 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 - `fix-with-cursor.md`
 
 更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/ci.md](docs/ci.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)、[docs/field-test-report.md](docs/field-test-report.md)。
+
+## 模拟验证包
+
+[synthetic validation pack](docs/validation/README.md) 用一组故意 broken 的模拟项目展示 scanner 行为。这是模拟验证数据，不是真实用户验证，也不能作为真实采用证据。
+
+文档中会明确标注：This is simulated validation data. These fixtures are synthetic projects. This is not evidence of real-world adoption.
+
+```bash
+npm run validation:synthetic
+```
 
 ## 当前检查项
 

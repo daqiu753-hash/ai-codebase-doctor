@@ -30,7 +30,7 @@ npx ai-codebase-doctor examples/ai-generated-fake-saas --out reports
 
 ```text
 Score: 0/100
-Critical: 8
+Critical: 7
 Warnings: 4
 Info: 3
 
@@ -189,6 +189,16 @@ Generated files:
 | `fix-with-cursor.md` | Repair prompt for Cursor. |
 
 See also [docs/report-schema.md](docs/report-schema.md), [docs/ci.md](docs/ci.md), [docs/integrations.md](docs/integrations.md), [docs/demo.md](docs/demo.md), and [docs/field-test-report.md](docs/field-test-report.md).
+
+## Synthetic validation
+
+The [synthetic validation pack](docs/validation/README.md) demonstrates expected scanner behavior on deliberately broken fixture projects. It is simulated validation data, and it is not real-world adoption evidence.
+
+The validation docs state this explicitly: This is simulated validation data. These fixtures are synthetic projects. This is not evidence of real-world adoption.
+
+```bash
+npm run validation:synthetic
+```
 
 ## What it checks today
 

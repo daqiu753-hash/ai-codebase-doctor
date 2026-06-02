@@ -1,0 +1,16 @@
+{
+  "name": "synthetic-docker-prisma-missing-schema",
+  "private": true,
+  "scripts": {
+    "start": "node src/index.js",
+    "migrate": "prisma migrate dev",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "prisma": "^6.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.8"
+  }
+}
+
