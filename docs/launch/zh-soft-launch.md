@@ -22,7 +22,8 @@ npx ai-codebase-doctor .
 
 这不是“大规模真实验证”，只是第一轮 field test 中一个具体误报被修掉的例子。后续还会继续扩大公开项目试跑。
 
+所以它现在更适合当作 AI 生成项目的第一层 sanity check，而不是安全审计或生产级质量保证。
+
 GitHub: https://github.com/daqiu753-hash/ai-codebase-doctor
 
 npm: https://www.npmjs.com/package/ai-codebase-doctor
-

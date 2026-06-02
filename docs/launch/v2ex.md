@@ -32,9 +32,10 @@ npx ai-codebase-doctor .
 
 这个不能当作“大规模真实验证”，目前只是第一轮公开项目试跑里的一个具体修复。后面会继续扩大 field test，尤其关注误报。
 
+所以我现在更把它定位成 AI 生成项目的第一层 sanity check，不是安全审计，也不是生产级质量保证。
+
 GitHub: https://github.com/daqiu753-hash/ai-codebase-doctor
 
 npm: https://www.npmjs.com/package/ai-codebase-doctor
 
 欢迎拍砖，尤其是：你们用 AI 生成项目时，最常见的“看起来完整但跑不起来”的坑是什么？
-

@@ -22,6 +22,8 @@ The scanner is best-effort and conservative by design: it favors concrete, expla
 npx ai-codebase-doctor .
 ```
 
+Quick links: [npm package](https://www.npmjs.com/package/ai-codebase-doctor), [GitHub releases](https://github.com/daqiu753-hash/ai-codebase-doctor/releases), [demo](docs/demo.md), [synthetic validation](docs/validation/README.md), [real field tests](docs/field-tests/README.md).
+
 Try it on the included broken AI-generated SaaS fixture:
 
 ```bash
@@ -188,7 +190,7 @@ Generated files:
 | `fix-with-claude-code.md` | Repair prompt for Claude Code. |
 | `fix-with-cursor.md` | Repair prompt for Cursor. |
 
-See also [docs/report-schema.md](docs/report-schema.md), [docs/ci.md](docs/ci.md), [docs/integrations.md](docs/integrations.md), [docs/demo.md](docs/demo.md), and [docs/field-test-report.md](docs/field-test-report.md).
+See also [docs/report-schema.md](docs/report-schema.md), [docs/ci.md](docs/ci.md), [docs/integrations.md](docs/integrations.md), [docs/demo.md](docs/demo.md), and [docs/field-tests](docs/field-tests/README.md).
 
 ## Synthetic validation
 

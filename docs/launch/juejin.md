@@ -58,9 +58,12 @@ v1.0.3 做了小修：
 
 这不是大规模真实验证，也不是说工具已经适配所有项目。它只是一个具体 field test 反馈到修复的例子。
 
+## 边界
+
+它更适合当作 AI 生成项目的第一层 sanity check，而不是安全审计、生产级质量保证或完整静态分析器。synthetic validation 只是故意 broken 的 fixture 演示，real field test 会单独记录，不混在一起当作采用证据。
+
 ## 链接
 
 GitHub: https://github.com/daqiu753-hash/ai-codebase-doctor
 
 npm: https://www.npmjs.com/package/ai-codebase-doctor
-

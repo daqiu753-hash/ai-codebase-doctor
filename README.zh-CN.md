@@ -18,6 +18,8 @@ AI 可以在几分钟内生成一个 repo。
 npx ai-codebase-doctor .
 ```
 
+快速入口：[npm package](https://www.npmjs.com/package/ai-codebase-doctor)、[GitHub releases](https://github.com/daqiu753-hash/ai-codebase-doctor/releases)、[demo](docs/demo.md)、[synthetic validation](docs/validation/README.md)、[real field tests](docs/field-tests/README.md)。
+
 试扫仓库内置的 broken AI-generated SaaS 示例：
 
 ```bash
@@ -142,7 +144,7 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 - `fix-with-claude-code.md`
 - `fix-with-cursor.md`
 
-更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/ci.md](docs/ci.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)、[docs/field-test-report.md](docs/field-test-report.md)。
+更多见 [docs/report-schema.md](docs/report-schema.md)、[docs/ci.md](docs/ci.md)、[docs/integrations.md](docs/integrations.md)、[docs/demo.md](docs/demo.md)、[docs/field-tests](docs/field-tests/README.md)。
 
 ## 模拟验证包
 
