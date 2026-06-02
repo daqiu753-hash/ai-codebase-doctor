@@ -10,6 +10,7 @@ export const testRealityScanner: Scanner = {
     const findings: Finding[] = []
 
     for (const file of context.testFiles) {
+      if (!shouldScanTestFile(file)) continue
       const content = await fs.readFile(path.join(context.rootPath, file), 'utf8')
       if (!hasAssertion(content)) {
         findings.push({
@@ -31,6 +32,20 @@ export const testRealityScanner: Scanner = {
 
     return findings
   }
+}
+
+function shouldScanTestFile(file: string): boolean {
+  if (!file.endsWith('.py')) return true
+
+  const basename = path.basename(file)
+  if (basename === '__init__.py' || basename === 'conftest.py') return false
+  if (isPythonHelperPath(file)) return false
+  return /^test_.*\.py$/.test(basename) || /^.*_test\.py$/.test(basename)
+}
+
+function isPythonHelperPath(file: string): boolean {
+  const normalized = file.replace(/\\/g, '/')
+  return /(^|\/)(tests\/)?(utils|helper|helpers|fixtures)\//.test(normalized)
 }
 
 function hasAssertion(content: string): boolean {

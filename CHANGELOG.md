@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.3
+
+- Reduce Python/FastAPI `T001` false positives.
+- Exclude `__init__.py`, `conftest.py`, and Python helper/fixture modules from assertion-free test detection.
+- Keep Python test detection limited to `test_*.py` and `*_test.py`.
+
 ## v1.0.2
 
 Small false-positive and report-noise fix.

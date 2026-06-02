@@ -6,6 +6,7 @@
 
 - Import detection is regex-based and may miss unusual multi-line imports.
 - Env detection focuses on direct static references such as `process.env.NAME`, `import.meta.env.NAME`, and `os.getenv("NAME")`.
+- Python assertion-free test detection is limited to `test_*.py` and `*_test.py`; helper modules, fixtures, `__init__.py`, and `conftest.py` are intentionally skipped.
 - README command checks focus on package manager and package script commands, not arbitrary shell command validation.
 - Runtime checks are best-effort and intentionally conservative.
 - Framework profiles are smoke tests, not complete framework analyzers.

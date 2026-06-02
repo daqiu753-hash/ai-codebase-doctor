@@ -11,7 +11,7 @@
 | `E001` | Env | critical | Source code uses an env var that is missing from `.env.example`. |
 | `E002` | Env | info | `.env.example` documents an env var that source code does not use. |
 | `D001` | Dependencies | critical | JS/TS source imports a package not declared in `package.json`. |
-| `T001` | Tests | warning | A test file has no obvious assertion. |
+| `T001` | Tests | warning | A JS/TS test file or Python `test_*.py` / `*_test.py` file has no obvious assertion. |
 
 ## Runtime Reality Checks
 

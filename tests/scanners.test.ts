@@ -130,6 +130,68 @@ describe('scanner behavior', () => {
     expect(testFindings[0]?.line).toBe(2)
   })
 
+  it('does not report Python package markers, fixtures, or helper modules as assertion-free tests', async () => {
+    const report = await withFixture(
+      {
+        'package.json': JSON.stringify({ scripts: {} }),
+        'tests/__init__.py': '',
+        'tests/conftest.py': [
+          'import pytest',
+          '',
+          '@pytest.fixture',
+          'def user():',
+          '    return {"name": "demo"}'
+        ].join('\n'),
+        'tests/utils/helper.py': 'def make_user():\n    return {"name": "demo"}',
+        'tests/helpers/factory.py': 'def build_user():\n    return {"name": "demo"}',
+        'tests/fixtures/data.py': 'USER = {"name": "demo"}',
+        'fixtures/data.py': 'USER = {"name": "demo"}',
+        'tests/test_real.py': [
+          'def test_real():',
+          '    assert True'
+        ].join('\n')
+      },
+      runDoctor
+    )
+
+    const testFindings = report.findings.filter((finding) => finding.id === 'T001')
+    expect(testFindings).toHaveLength(0)
+  })
+
+  it('still reports Python test_*.py files without assertions', async () => {
+    const report = await withFixture(
+      {
+        'package.json': JSON.stringify({ scripts: {} }),
+        'tests/test_user.py': [
+          'def test_user():',
+          '    result = True'
+        ].join('\n')
+      },
+      runDoctor
+    )
+
+    const testFindings = report.findings.filter((finding) => finding.id === 'T001')
+    expect(testFindings).toHaveLength(1)
+    expect(testFindings[0]?.file).toBe('tests/test_user.py')
+  })
+
+  it('still reports Python *_test.py files without assertions', async () => {
+    const report = await withFixture(
+      {
+        'package.json': JSON.stringify({ scripts: {} }),
+        'tests/user_test.py': [
+          'def test_user():',
+          '    result = True'
+        ].join('\n')
+      },
+      runDoctor
+    )
+
+    const testFindings = report.findings.filter((finding) => finding.id === 'T001')
+    expect(testFindings).toHaveLength(1)
+    expect(testFindings[0]?.file).toBe('tests/user_test.py')
+  })
+
   it('reports package scripts that reference missing files with package.json line numbers', async () => {
     const report = await withFixture(
       {
