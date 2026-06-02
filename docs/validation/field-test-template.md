@@ -2,6 +2,8 @@
 
 Use this template for real project trials only. Do not mix real field test notes with synthetic validation results.
 
+Active real field test workflow docs now live in [docs/field-tests](../field-tests/README.md). This file remains as a compact reference template.
+
 ## Project Name
 
 TBD
@@ -53,4 +55,3 @@ TBD
 ## Conclusion
 
 TBD
-

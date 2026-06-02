@@ -200,6 +200,8 @@ The validation docs state this explicitly: This is simulated validation data. Th
 npm run validation:synthetic
 ```
 
+Real field tests are tracked separately from synthetic validation in [docs/field-tests](docs/field-tests/README.md).
+
 ## What it checks today
 
 | ID | Area | Severity | Check |

@@ -16,6 +16,7 @@
     "CHANGELOG.md",
     "docs/checks.md",
     "docs/ci.md",
+    "docs/field-tests",
     "docs/known-limitations.md",
     "docs/profiles.md",
     "docs/report-schema.md",

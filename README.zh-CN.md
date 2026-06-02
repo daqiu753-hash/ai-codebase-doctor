@@ -154,6 +154,8 @@ Fix: Add DATABASE_URL= to .env.example and document how to obtain it.
 npm run validation:synthetic
 ```
 
+真实 field tests 会单独记录在 [docs/field-tests](docs/field-tests/README.md)，不和模拟验证数据混用。
+
 ## 当前检查项
 
 | ID | 领域 | 含义 |

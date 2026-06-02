@@ -51,5 +51,6 @@ The scans are offline by default and do not pass `--online`. The scanner reads f
 - [simulated-case-fastapi-env-missing.md](simulated-case-fastapi-env-missing.md)
 - [simulated-case-docker-prisma-missing-schema.md](simulated-case-docker-prisma-missing-schema.md)
 
-Use [field-test-template.md](field-test-template.md) for real project trials. Keep real field tests separate from this simulated pack.
+Real field tests are tracked separately in [docs/field-tests](../field-tests/README.md). Keep real project observations out of this synthetic pack.
 
+The older [field-test-template.md](field-test-template.md) remains for reference, but the active real field test workflow lives in `docs/field-tests/`.
